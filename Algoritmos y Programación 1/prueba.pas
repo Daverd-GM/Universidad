@@ -24,7 +24,7 @@ writeln('a ver la vaina');
 delay(3000);
 a:=readkey;
 writeln('hello');
-if readkey=a then write('p');
+if readkey=a then write('coco');
 readln;
 END.
 
