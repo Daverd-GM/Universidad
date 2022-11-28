@@ -33,12 +33,11 @@ var Clave,Piedra:longint;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
-  var Eleccion:Byte; regresar:boolean;
+  var Eleccion:Byte;
   Begin
         readln(Debug_Access);
         if Debug_Access='Admin' then
         begin
-          repeat
                 writeln('entraste al menú de Debug');
                 writeln('1:determina si los números iguales');
                 Writeln('2:determina si la clave es multiplo de de la piedra y viceversa');
@@ -51,11 +50,11 @@ var Clave,Piedra:longint;
                 case Eleccion of
                  1:Begin
                         Numeros_Iguales(Clave,Piedra);
-                        if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los n�meros son iguales') else writeln('Los n�meros no son iguales');
+                        if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
                    End;
                  2:Begin
                         Numeros_Multiplo(Clave,Piedra);
-                        if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los n�meros son m�ltiplos') else writeln('Los n�meros no son m�ltiplos');
+                        if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
                    End;
                  3:Begin
                         Writeln(1);
@@ -70,8 +69,7 @@ var Clave,Piedra:longint;
                         Writeln(1);
                    End;
                 End;
-          writeln('quiere seleccionar otra opci�n?');
-          Until regresar=false;
+          writeln('quiere seleccionar otra opción?');
         end;
   End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
