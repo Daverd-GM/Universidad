@@ -51,11 +51,11 @@ var Clave,Piedra:longint;
                 case Eleccion of
                  1:Begin
                         Numeros_Iguales(Clave,Piedra);
-                        if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los n�meros son iguales') else writeln('Los n�meros no son iguales');
+                        if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
                    End;
                  2:Begin
                         Numeros_Multiplo(Clave,Piedra);
-                        if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los n�meros son m�ltiplos') else writeln('Los n�meros no son m�ltiplos');
+                        if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
                    End;
                  3:Begin
                         Writeln(1);
