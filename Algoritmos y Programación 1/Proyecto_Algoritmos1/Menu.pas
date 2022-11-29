@@ -1,6 +1,6 @@
 {
     $Id: gplunit.pt,v 1.2 2002/09/07 15:40:47 peter Exp 2022/11/19 22:14:58 peter Exp $
-    This file is part of Proyecto Algoritmos y programaci�n 1
+    This file is part of Proyecto Algoritmos y programación 1
     Copyright (c) 2022 by David Hidalgo CI: 29.827.224 y Daniel Castellanos CI:30.142.703
 
     ''
@@ -18,9 +18,28 @@ Program Entrega1;
 uses CRT;
 
 var Clave,Piedra:longint;
- //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
- function Coincidencia_de_Clave(clave,piedra:integer):boolean;
- var Clave_Debug:String;
+
+//Esta función verifica si un número es primo o no
+function versiesPrimo(numero:longint):boolean;
+ var
+   divisores,VarControl:integer;
+ begin
+   divisores:=0;
+   for varControl := 1 to numero do
+     begin
+         if numero mod varControl = 0 then
+            divisores := divisores + 1;
+     end;
+   if divisores = 2 then
+      versiesPrimo:=true{devuelve verdad si es primo}
+   else
+      versiesPrimo:=false;{devuelve falso si no es primo}
+ end;
+//===============================================================================================
+
+//Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
+function Coincidencia_de_Clave(clave,piedra:integer):boolean;
+  var Clave_Debug:String;
   // Esta función determina si los números son iguales
   function numeros_iguales(Clave,Piedra:integer):boolean;
   Begin if (clave)<>(piedra) then numeros_iguales:=false; End;
@@ -29,7 +48,9 @@ var Clave,Piedra:longint;
   Function numeros_multiplo(Clave,Piedra:integer):boolean;
   begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Esta función 
+  // Esta función determina si son números primos relativos
+  Function Numeros_Primos_relativos(Clave,Piedra:integer):boolean;
+  
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
@@ -73,11 +94,12 @@ var Clave,Piedra:longint;
         end;
   End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- begin
+begin
         Menu_Clave(clave_debug);
         if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
- end;
- //======================================================================================
+end;
+//======================================================================================
+
 Begin
   clrscr;
   readln(Clave);
