@@ -21,19 +21,18 @@ var Clave,Piedra:longint;
 
 //Esta función verifica si un número es primo o no
 function versiesPrimo(numero:longint):boolean;
- var
-   divisores,VarControl:integer;
- begin
-   divisores:=0;
-   for varControl := 1 to numero do
-     begin
-         if numero mod varControl = 0 then
-            divisores := divisores + 1;
-     end;
-   if divisores = 2 then
-      versiesPrimo:=true{devuelve verdad si es primo}
-   else
-      versiesPrimo:=false;{devuelve falso si no es primo}
+ var divisores,VarControl:integer;
+ Begin
+  divisores:=0;
+  for varControl := 1 to numero/2 do
+  Begin
+    if numero mod varControl = 0 then
+    divisores := divisores + 1;
+  end;
+  if divisores = 2 then
+  versiesPrimo:=true{devuelve verdad si es primo}
+  else
+  versiesPrimo:=false;{devuelve falso si no es primo}
  end;
 //===============================================================================================
 
@@ -50,54 +49,61 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si son números primos relativos
   Function Numeros_Primos_relativos(Clave,Piedra:integer):boolean;
+    var c1,c2:longint;
+    Begin
+      for c1:=1 to piedra/2 do
+      Begin
+        for c2:=1 to clave/2
+      End;
+
   
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
   var Eleccion:Byte;
   Begin
-        readln(Debug_Access);
-        if Debug_Access='Admin' then
-        begin
-                writeln('entraste al menú de Debug');
-                writeln('1:determina si los números iguales');
-                Writeln('2:determina si la clave es multiplo de de la piedra y viceversa');
-                writeln('3:determina si "" ');
-                writeln('4:determina si "" ');
-                writeln('5:determina si "" ');
-                writeln('6:determina si "" ');
-                writeln('7:determina si "" ');
-                readln(Eleccion);
-                case Eleccion of
-                 1:Begin
-                        Numeros_Iguales(Clave,Piedra);
-                        if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
-                   End;
-                 2:Begin
-                        Numeros_Multiplo(Clave,Piedra);
-                        if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
-                   End;
-                 3:Begin
-                        Writeln(1);
-                   End;
-                 4:Begin
-                        Writeln(1);
-                   End;
-                 6:Begin
-                        Writeln(1);
-                   End;
-                 7:Begin
-                        Writeln(1);
-                   End;
-                End;
-          writeln('quiere seleccionar otra opción?');
+   readln(Debug_Access);
+   if Debug_Access='Admin' then
+    Begin
+      writeln('entraste al menú de Debug');
+      writeln('1:determina si los números iguales');
+      Writeln('2:determina si la clave es multiplo de de la piedra y viceversa');
+      writeln('3:determina si "" ');
+      writeln('4:determina si "" ');
+      writeln('5:determina si "" ');
+      writeln('6:determina si "" ');
+      writeln('7:determina si "" ');
+      readln(Eleccion);
+      case Eleccion of
+       1:Begin
+          Numeros_Iguales(Clave,Piedra);
+          if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
+        End;
+       2:Begin
+         Numeros_Multiplo(Clave,Piedra);
+         if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
+        End;
+       3:Begin
+        Writeln(1);
+        End;
+        4:Begin
+        Writeln(1);
+        End;
+        6:Begin
+        Writeln(1);
+        End;
+        7:Begin
+        Writeln(1);
+        End;
+      End;
+      writeln('quiere seleccionar otra opción?');
         end;
   End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-begin
-        Menu_Clave(clave_debug);
-        if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
-end;
+ begin
+  Menu_Clave(clave_debug);
+  if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
+ end;
 //======================================================================================
 
 Begin
