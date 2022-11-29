@@ -16,15 +16,15 @@
 Program Entrega1;
 
 uses CRT;
-// Esta función determina si los números son iguales
-  function numeros_iguales(Clave,Piedra:integer):boolean;
-  Begin if (clave)<>(piedra) then numeros_iguales:=false; End;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 var Clave,Piedra:longint;
  //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
  function Coincidencia_de_Clave(clave,piedra:integer):boolean;
  var Clave_Debug:String;
-  
+  // Esta función determina si los números son iguales
+  function numeros_iguales(Clave,Piedra:integer):boolean;
+  Begin if (clave)<>(piedra) then numeros_iguales:=false; End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si la Clave es multiplo de la Piedra o viceversa
   Function numeros_multiplo(Clave,Piedra:integer):boolean;
   begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
