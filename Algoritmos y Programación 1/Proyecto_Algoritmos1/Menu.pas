@@ -75,29 +75,29 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
       writeln('7:determina si "" ');
       readln(Eleccion);
       case Eleccion of
-       1:Begin
+        1:Begin
           Numeros_Iguales(Clave,Piedra);
           if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
         End;
-       2:Begin
+        2:Begin
          Numeros_Multiplo(Clave,Piedra);
          if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
         End;
-       3:Begin
-        Writeln(1);
+        3:Begin
+          Writeln(1);
         End;
         4:Begin
-        Writeln(1);
+          Writeln(1);
         End;
         6:Begin
-        Writeln(1);
+          Writeln(1);
         End;
         7:Begin
-        Writeln(1);
+          Writeln(1);
         End;
       End;
       writeln('quiere seleccionar otra opción?');
-        end;
+    end;
   End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  begin
