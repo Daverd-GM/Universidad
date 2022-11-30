@@ -34,7 +34,7 @@ function versiesPrimo(numero:longint):boolean;
   else
   versiesPrimo:=false;{devuelve falso si no es primo}
  end;
-//===============================================================================================
+//===========================================================================================
 
 //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
 function Coincidencia_de_Clave(clave,piedra:integer):boolean;
@@ -42,11 +42,11 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   // Esta función determina si los números son iguales
   function numeros_iguales(Clave,Piedra:integer):boolean;
   Begin if (clave)<>(piedra) then numeros_iguales:=false; End;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si la Clave es multiplo de la Piedra o viceversa
   Function numeros_multiplo(Clave,Piedra:integer):boolean;
   begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si son números primos relativos
   Function Numeros_Primos_relativos(Clave,Piedra:integer):boolean;
     var c1,c2:longint;
@@ -55,8 +55,6 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
       Begin
         for c2:=1 to clave/2
       End;
-
-  
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
