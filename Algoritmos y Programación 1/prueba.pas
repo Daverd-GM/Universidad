@@ -1,3 +1,4 @@
+
 {
     $Id: gplprog.pt,v 1.2 2002/09/07 15:40:47 peter Exp 2022/10/09 02:01:46 peter Exp $
     This file is part of sa
@@ -13,18 +14,20 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
-program que;
 
-uses crt;
-var a:string; b:boolean;
-BEGIN
-clrscr;
-a:='';
-writeln('a ver la vaina');
-delay(3000);
-a:=readkey;
-writeln('hello');
-if readkey=a then write('coco');
-readln;
-END.
+Program que;
 
+Uses crt;
+
+Var a: string;
+  b: boolean;
+Begin
+  clrscr;
+  a := '';
+  writeln('a ver la vaina');
+  delay(3000);
+  a := readkey;
+  writeln('hello');
+  If readkey=a Then write('coco');
+  readln;
+End.
