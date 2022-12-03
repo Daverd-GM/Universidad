@@ -21,31 +21,33 @@ var Clave,Piedra:longint;
 
 //Esta función verifica si un número es primo o no
 function versiesPrimo(numero:longint):boolean;
-var divisores,VarControl:integer;
-Begin
-  divisores:=0;
-  for varControl := 1 to numero/2 do
+  var divisores,VarControl:integer;
   Begin
-    if numero mod varControl = 0 then
-    divisores := divisores + 1;
+    divisores:=0;
+    for varControl := 1 to numero/2 do
+    Begin
+      if numero mod varControl = 0 then
+      divisores := divisores + 1;
+    end;
+    if divisores = 2 then
+      versiesPrimo:=true{devuelve verdad si es primo}
+    else
+    versiesPrimo:=false;{devuelve falso si no es primo}
   end;
-  if divisores = 2 then
-  versiesPrimo:=true{devuelve verdad si es primo}
-  else
-  versiesPrimo:=false;{devuelve falso si no es primo}
-end;
-//===============================================================================================
+//=======================================================================================
 
 //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
 function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   var Clave_Debug:String;
   // Esta función determina si los números son iguales
   function numeros_iguales(Clave,Piedra:integer):boolean;
-  Begin if (clave)<>(piedra) then numeros_iguales:=false; End;
+    Begin if (clave)<>(piedra) then numeros_iguales:=false; End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si la Clave es multiplo de la Piedra o viceversa
   Function numeros_multiplo(Clave,Piedra:integer):boolean;
-  begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
+    begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Esta función determina si el explorador tiene el número “n”, el número de la piedra es el n-ésimo número triangular, o viceversa.
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si son números primos relativos
   Function Numeros_Primos_relativos(Clave,Piedra:integer):boolean;
@@ -55,14 +57,19 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
       Begin
         for c2:=1 to clave/2
       End;
-
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Esta función determina si uno de los números está contenido en el otro.
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Esta función determina si uno de los números es el inverso del otro.
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Esta función determina si el número de la piedra es “amigo” del número del explorador.
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
-  var Eleccion:Byte;
-  Begin
-  readln(Debug_Access);
-  if Debug_Access='Admin' then
+    var Eleccion:Byte;
+    Begin
+    readln(Debug_Access);
+    if Debug_Access='Admin' then
     Begin
       writeln('entraste al menú de Debug');
       writeln('1:determina si los números iguales');
@@ -97,13 +104,13 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
       End;
       writeln('quiere seleccionar otra opción?');
     end;
-  End;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-begin
-  Menu_Clave(clave_debug);
-  if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
-end;
-//======================================================================================
+    End;
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    begin
+      Menu_Clave(clave_debug);
+      if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
+    end;
+//=======================================================================================
 
 Begin
   clrscr;

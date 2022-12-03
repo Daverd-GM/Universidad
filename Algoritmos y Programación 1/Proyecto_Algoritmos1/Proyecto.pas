@@ -8,7 +8,6 @@ Var
 
 Function Digitos(N: longint): longint;
 //funcion que calcula la cantidad de digitos de un número
-
 Var 
   i: longint;
 Begin
@@ -22,7 +21,6 @@ End;
 
 Function NumStr(num:longint): String;
 //funcion que transforma numeros en string
-
 Var 
   p: string;
   i,n,c,cont: longint;
@@ -52,7 +50,6 @@ End;
 
 Function Contenido(Num,N: longint): boolean;
 // Esta funcion determina si un numero esta contenido en otro
-
 Var 
   p,m: string;
   i: longint;
