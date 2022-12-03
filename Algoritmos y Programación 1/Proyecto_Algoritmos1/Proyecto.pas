@@ -74,10 +74,10 @@ Begin
   Else
     Begin
       i := pos(p,m);
-       If (i<>0) Then
-         Begin
-           b := true;
-         End;
+      If (i<>0) Then
+        Begin
+          b := true;
+        End;
     End;
 End;
 
@@ -109,22 +109,22 @@ Var
   n1,n2: longint;
   b: boolean;
 
- Function SumaDivisores(n:longint): longint;
+  Function SumaDivisores(n:longint): longint;
 //funcion para optimizar este proceso
 
- Var 
-   i,suma,d: longint;
- Begin
-   suma := 0;
-   For i := 1 To (n) Do
-     Begin
-       If ((n Mod i)=0) Then
-         Begin
-           suma := suma+i;
-         End;
-     End;
-   SumaDivisores := suma;
- End;
+  Var 
+  i,suma,d: longint;
+  Begin
+    suma := 0;
+    For i := 1 To (n) Do
+      Begin
+        If ((n Mod i)=0) Then
+          Begin
+            suma := suma+i;
+          End;
+      End;
+    SumaDivisores := suma;
+  End;
 
 Begin
   N1 := SumaDivisores(n)-N;
@@ -160,10 +160,10 @@ Begin
     End
   Else
     Begin
-           For i := 1 To num Do
-             Begin
-               tri := tri+i;
-             End;
+      For i := 1 To num Do
+      Begin
+        tri := tri+i;
+      End;
       If tri=n Then
         Begin
           b := true;
