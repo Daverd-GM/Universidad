@@ -46,9 +46,7 @@ Begin
         0: p := '0' + p;
       End;
       i := i Div 10;
-
     End;
-
   NumStr := p;
 End;
 
@@ -194,6 +192,5 @@ Begin
     Begin
       writeln('no')
     End;
-
   readln;
 End.

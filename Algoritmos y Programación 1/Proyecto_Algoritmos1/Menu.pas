@@ -21,8 +21,8 @@ var Clave,Piedra:longint;
 
 //Esta función verifica si un número es primo o no
 function versiesPrimo(numero:longint):boolean;
- var divisores,VarControl:integer;
- Begin
+var divisores,VarControl:integer;
+Begin
   divisores:=0;
   for varControl := 1 to numero/2 do
   Begin
@@ -33,7 +33,7 @@ function versiesPrimo(numero:longint):boolean;
   versiesPrimo:=true{devuelve verdad si es primo}
   else
   versiesPrimo:=false;{devuelve falso si no es primo}
- end;
+end;
 //===============================================================================================
 
 //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
@@ -56,14 +56,13 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
         for c2:=1 to clave/2
       End;
 
-  
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
   var Eleccion:Byte;
   Begin
-   readln(Debug_Access);
-   if Debug_Access='Admin' then
+  readln(Debug_Access);
+  if Debug_Access='Admin' then
     Begin
       writeln('entraste al menú de Debug');
       writeln('1:determina si los números iguales');
@@ -80,8 +79,8 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
           if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
         End;
         2:Begin
-         Numeros_Multiplo(Clave,Piedra);
-         if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
+          Numeros_Multiplo(Clave,Piedra);
+          if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
         End;
         3:Begin
           Writeln(1);
@@ -100,10 +99,10 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
     end;
   End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- begin
+begin
   Menu_Clave(clave_debug);
   if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
- end;
+end;
 //======================================================================================
 
 Begin
