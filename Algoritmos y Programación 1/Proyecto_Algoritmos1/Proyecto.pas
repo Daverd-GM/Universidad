@@ -4,10 +4,12 @@ Program proyecto;
 Var 
   n1,n2,op: longint;
   bool: boolean;
-  //funciones utiles para los procesos
+  
+//funciones utiles para los procesos
 
 Function Digitos(N: longint): longint;
 //funcion que calcula la cantidad de digitos de un número
+
 Var 
   i: longint;
 Begin
@@ -21,6 +23,7 @@ End;
 
 Function NumStr(num:longint): String;
 //funcion que transforma numeros en string
+
 Var 
   p: string;
   i,n,c,cont: longint;
@@ -31,7 +34,7 @@ Begin
   For c := 1 To cont Do
     Begin
       n := i Mod 10;
-      Case n Of
+      Case n Of 
         1: p := '1' + p;
         2: p := '2' + p;
         3: p := '3' + p;
@@ -50,6 +53,7 @@ End;
 
 Function Contenido(Num,N: longint): boolean;
 // Esta funcion determina si un numero esta contenido en otro
+
 Var 
   p,m: string;
   i: longint;
@@ -104,22 +108,22 @@ Var
   n1,n2: longint;
   b: boolean;
 
-  Function SumaDivisores(n:longint): longint;
+Function SumaDivisores(n:longint): longint;
 //funcion para optimizar este proceso
 
-  Var 
+Var 
   i,suma,d: longint;
-  Begin
-    suma := 0;
-    For i := 1 To (n) Do
-      Begin
-        If ((n Mod i)=0) Then
-          Begin
-            suma := suma+i;
-          End;
-      End;
-    SumaDivisores := suma;
-  End;
+Begin
+  suma := 0;
+  For i := 1 To (n) Do
+    Begin
+      If ((n Mod i)=0) Then
+        Begin
+          suma := suma+i;
+        End;
+    End;
+  SumaDivisores := suma;
+End;
 
 Begin
   N1 := SumaDivisores(n)-N;
@@ -156,9 +160,9 @@ Begin
   Else
     Begin
       For i := 1 To num Do
-      Begin
-        tri := tri+i;
-      End;
+        Begin
+          tri := tri+i;
+        End;
       If tri=n Then
         Begin
           b := true;
@@ -175,7 +179,7 @@ Begin
   writeln;
   readln(op);
   writeln;
-  Case op Of
+  Case op Of 
     1: bool := contenido(n1,n2);
     2: bool :=  amigo(n1,n2);
     3: bool := Inverso(n1,n2);

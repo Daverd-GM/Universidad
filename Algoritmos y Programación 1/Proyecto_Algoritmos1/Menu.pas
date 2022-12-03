@@ -19,6 +19,50 @@ uses CRT;
 
 var Clave,Piedra:longint;
 
+//funcion que calcula la cantidad de digitos de un número
+Function Digitos(N: longint): longint;
+Var 
+  i: longint;
+Begin
+  i := 0;
+  Repeat
+    n := n Div 10;
+    i := i+1;
+  Until (n=0);
+  Digitos := i;
+End;
+//=======================================================================================
+
+//funcion que transforma numeros en string
+Function NumStr(num:longint): String;
+Var 
+  p: string;
+  i,n,c,cont: longint;
+Begin
+  p := '';
+  i := num;
+  cont := digitos(num);
+  For c := 1 To cont Do
+    Begin
+      n := i Mod 10;
+      Case n Of 
+        1: p := '1' + p;
+        2: p := '2' + p;
+        3: p := '3' + p;
+        4: p := '4' + p;
+        5: p := '5' + p;
+        6: p := '6' + p;
+        7: p := '7' + p;
+        8: p := '8' + p;
+        9: p := '9' + p;
+        0: p := '0' + p;
+      End;
+      i := i Div 10;
+    End;
+  NumStr := p;
+End;
+//=======================================================================================
+
 //Esta función verifica si un número es primo o no
 function versiesPrimo(numero:longint):boolean;
   var divisores,VarControl:integer;
