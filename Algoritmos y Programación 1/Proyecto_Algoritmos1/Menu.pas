@@ -86,7 +86,7 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si la Clave es multiplo de la Piedra o viceversa
   Function numeros_multiplo(Clave,Piedra:integer):boolean;
-    begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
+    begin if (Clave mod piedra =0) or (piedra mod clave =0) then Numeros_Multiplo:=true; end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si el explorador tiene el número “n”, el número de la piedra es el n-ésimo número triangular, o viceversa.
   Function Triangular(n,num:longint): boolean;
