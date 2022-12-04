@@ -263,6 +263,8 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
 
 Begin
   clrscr;
+  Clave:=1;
+  Piedra:=1;
   CambiaClave(Clave,'jugador');
   Readln(Piedra);
   Coincidencia_de_Clave(Clave,Piedra);
