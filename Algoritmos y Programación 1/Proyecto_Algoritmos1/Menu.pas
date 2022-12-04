@@ -18,6 +18,19 @@ Program Entrega1;
 uses CRT;
 
 var Clave,Piedra:longint;
+//Procedimiento que me permite cambiar el valor de la clave del jugador o piedra
+procedure CambiaClave(var Clave:Integer; var Tipo:string);
+begin
+  repeat
+    writeln('Inserte el valor nuevo de su ',tipo);
+    readln(Clave);
+    if clave<1 then
+    begin
+      writeln('El valor de la clave debe de ser mayor o igual a 1')
+    end;
+  until (clave>=1);
+end;
+//=======================================================================================
 
 //funcion que calcula la cantidad de digitos de un número
 Function Digitos(N: longint): longint;
@@ -117,25 +130,26 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
       i: longint;
       b: boolean;
     Begin
-      m := NumStr(n);
-      p := NumStr(num);
-      b := false;
+      m:= NumStr(n);
+      p:= NumStr(num);
+      b:= false;
       If N<num Then
         Begin
-          i := pos(m,p);
+          i:= pos(m,p);
           If (i<>0) Then
             Begin
-              b := true;
+              b:= true;
             End;
         End
       Else
         Begin
-          i := pos(p,m);
+          i:= pos(p,m);
           If (i<>0) Then
             Begin
-              b := true;
+              b:= true;
             End;
         End;
+      Contenido:=b
     End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si uno de los números es el inverso del otro.
@@ -144,18 +158,19 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
       b: boolean;
       c,i,inv: longint;
     Begin
+      inv:=0;
       c := Digitos(num);
       b := false;
       For i := 1 To c Do
         Begin
-          inv := (num Mod 10)+(inv*10);
-          num := num Div 10;
+          inv:= (num Mod 10)+(inv*10);
+          num:= num Div 10;
         End;
       If inv=n Then
         Begin
-          b := true;
+          b:= true;
         End;
-      inverso := b;
+      inverso:=b;
     End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si el número de la piedra es “amigo” del número del explorador. y viseverza
@@ -166,7 +181,7 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
     //funcion para optimizar este proceso
     Function SumaDivisores(n:longint): longint;
       Var
-        i,suma,d: longint;
+        i,suma: longint;
       Begin
         suma := 0;
         For i := 1 To (n) Do
@@ -193,6 +208,7 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   Procedure Menu_Clave(debug_access:string);
     var Eleccion:Byte;
     Begin
+      debug_access:='';
       readln(Debug_Access);
       if Debug_Access='Admin' then
       Begin
@@ -219,7 +235,7 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
             if (Triangular(Clave,Piedra))=true then writeln('Los números son Triangulares') else writeln('Los números no son triangulares');
           End;
           4:Begin
-            Writeln(1);
+            Writeln(4);
           End;
           5:Begin
             Contenido(Clave,Piedra);
@@ -239,6 +255,7 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
     End;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     begin
+      clave_debug:='';
       Menu_Clave(clave_debug);
       if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
     end;
@@ -246,7 +263,7 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
 
 Begin
   clrscr;
-  readln(Clave);
+  CambiaClave(Clave,'jugador');
   Readln(Piedra);
   Coincidencia_de_Clave(Clave,Piedra);
   writeln('llegaste al final del programa pricipal');
