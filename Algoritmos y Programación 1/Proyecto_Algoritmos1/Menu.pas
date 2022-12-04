@@ -21,7 +21,7 @@ var Clave,Piedra:longint;
 
 //funcion que calcula la cantidad de digitos de un número
 Function Digitos(N: longint): longint;
-Var 
+Var
   i: longint;
 Begin
   i := 0;
@@ -35,7 +35,7 @@ End;
 
 //funcion que transforma numeros en string
 Function NumStr(num:longint): String;
-Var 
+Var
   p: string;
   i,n,c,cont: longint;
 Begin
@@ -45,7 +45,7 @@ Begin
   For c := 1 To cont Do
     Begin
       n := i Mod 10;
-      Case n Of 
+      Case n Of
         1: p := '1' + p;
         2: p := '2' + p;
         3: p := '3' + p;
@@ -63,23 +63,6 @@ Begin
 End;
 //=======================================================================================
 
-//Esta función verifica si un número es primo o no
-function versiesPrimo(numero:longint):boolean;
-  var divisores,VarControl:integer;
-  Begin
-    divisores:=0;
-    for varControl := 1 to numero/2 do
-    Begin
-      if numero mod varControl = 0 then
-      divisores := divisores + 1;
-    end;
-    if divisores = 2 then
-      versiesPrimo:=true{devuelve verdad si es primo}
-    else
-    versiesPrimo:=false;{devuelve falso si no es primo}
-  end;
-//=======================================================================================
-
 //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
 function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   var Clave_Debug:String;
@@ -92,62 +75,167 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
     begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si el explorador tiene el número “n”, el número de la piedra es el n-ésimo número triangular, o viceversa.
+  Function Triangular(n,num:longint): boolean;
+  Var
+    i,tri: longint;
+    b: boolean;
+  Begin
+    tri := 0;
+    b := false;
+    If n<Num Then
+      Begin
+        For i := 1 To N Do
+          Begin
+            tri := tri+i;
+          End;
+        If tri=num Then
+          Begin
+            b := true;
+          End;
+      End
+    Else
+      Begin
+        For i := 1 To num Do
+          Begin
+            tri := tri+i;
+          End;
+        If tri=n Then
+          Begin
+            b := true;
+          End;
+      End;
+    triangular := b;
+  End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si son números primos relativos
-  Function Numeros_Primos_relativos(Clave,Piedra:integer):boolean;
-    var c1,c2:longint;
-    Begin
-      for c1:=1 to piedra/2 do
-      Begin
-        for c2:=1 to clave/2
-      End;
+
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si uno de los números está contenido en el otro.
+  Function Contenido(Num,N: longint): boolean;
+    Var
+      p,m: string;
+      i: longint;
+      b: boolean;
+    Begin
+      m := NumStr(n);
+      p := NumStr(num);
+      b := false;
+      If N<num Then
+        Begin
+          i := pos(m,p);
+          If (i<>0) Then
+            Begin
+              b := true;
+            End;
+        End
+      Else
+        Begin
+          i := pos(p,m);
+          If (i<>0) Then
+            Begin
+              b := true;
+            End;
+        End;
+    End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si uno de los números es el inverso del otro.
+  Function Inverso(n,num:longint): boolean;
+    Var
+      b: boolean;
+      c,i,inv: longint;
+    Begin
+      c := Digitos(num);
+      b := false;
+      For i := 1 To c Do
+        Begin
+          inv := (num Mod 10)+(inv*10);
+          num := num Div 10;
+        End;
+      If inv=n Then
+        Begin
+          b := true;
+        End;
+      inverso := b;
+    End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  // Esta función determina si el número de la piedra es “amigo” del número del explorador.
+  // Esta función determina si el número de la piedra es “amigo” del número del explorador. y viseverza
+  Function Amigo(num,n:longint): boolean;
+    Var
+      n1,n2: longint;
+      b: boolean;
+    //funcion para optimizar este proceso
+    Function SumaDivisores(n:longint): longint;
+      Var
+        i,suma,d: longint;
+      Begin
+        suma := 0;
+        For i := 1 To (n) Do
+          Begin
+            If ((n Mod i)=0) Then
+              Begin
+                suma := suma+i;
+              End;
+          End;
+        SumaDivisores := suma;
+      End;
+    Begin
+      N1 := SumaDivisores(n)-N;
+      n2 := SumaDivisores(num)-num;
+      b := false;
+      If (n1=num) And (n2=n) Then
+        Begin
+          B := true;
+        End;
+      amigo := b;
+    End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
     var Eleccion:Byte;
     Begin
-    readln(Debug_Access);
-    if Debug_Access='Admin' then
-    Begin
-      writeln('entraste al menú de Debug');
-      writeln('1:determina si los números iguales');
-      Writeln('2:determina si la clave es multiplo de de la piedra y viceversa');
-      writeln('3:determina si "" ');
-      writeln('4:determina si "" ');
-      writeln('5:determina si "" ');
-      writeln('6:determina si "" ');
-      writeln('7:determina si "" ');
-      readln(Eleccion);
-      case Eleccion of
-        1:Begin
-          Numeros_Iguales(Clave,Piedra);
-          if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
+      readln(Debug_Access);
+      if Debug_Access='Admin' then
+      Begin
+        writeln('entraste al menú de Debug');
+        writeln('1:determina si los números iguales');
+        Writeln('2:determina si la clave es multiplo de de la piedra y viceversa');
+        writeln('3:determina si números triangulares');
+        writeln('4:determina si "" ');
+        writeln('5:determina si uno de los números está contenido en el otro.');
+        writeln('6:determina si uno de los números es el inverso del otro.');
+        writeln('7:determina si el número de la piedra es “amigo” del número del explorador y viseverza.');
+        readln(Eleccion);
+        case Eleccion of
+          1:Begin
+            Numeros_Iguales(Clave,Piedra);
+            if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
+          End;
+          2:Begin
+            Numeros_Multiplo(Clave,Piedra);
+            if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
+          End;
+          3:Begin
+              Triangular(Clave,Piedra);
+            if (Triangular(Clave,Piedra))=true then writeln('Los números son Triangulares') else writeln('Los números no son triangulares');
+          End;
+          4:Begin
+            Writeln(1);
+          End;
+          5:Begin
+            Contenido(Clave,Piedra);
+            if (Contenido(Clave,Piedra))=true then writeln('Uno de los n�meros est� contenidos uno dentro del otro') else writeln('Ninguno de los números esta contenido dentro del otro');
+            End;
+          6:Begin
+            Inverso(Clave,Piedra);
+            if(Inverso(Clave,Piedra))=true then writeln('Los números son Inverso') else writeln('Los números no son Inversos');
+          End;
+          7:Begin
+            Amigo(Clave,Piedra);
+            if (Amigo(Clave,Piedra))=true then writeln('Los números son Amigos') else writeln('Los números no son Amigos');
+          End;
         End;
-        2:Begin
-          Numeros_Multiplo(Clave,Piedra);
-          if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
-        End;
-        3:Begin
-          Writeln(1);
-        End;
-        4:Begin
-          Writeln(1);
-        End;
-        6:Begin
-          Writeln(1);
-        End;
-        7:Begin
-          Writeln(1);
-        End;
-      End;
-      writeln('quiere seleccionar otra opción?');
-    end;
+        writeln('quiere seleccionar otra opción?');
+      end;
     End;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     begin
