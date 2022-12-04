@@ -19,7 +19,7 @@ uses CRT;
 
 var Clave,Piedra:longint;
 //Procedimiento que me permite cambiar el valor de la clave del jugador o piedra
-procedure CambiaClave(var Clave:Integer; var Tipo:string);
+function CambiaClave(Clave:longint; Tipo:string): integer;
 begin
   repeat
     writeln('Inserte el valor nuevo de su ',tipo);
@@ -29,6 +29,7 @@ begin
       writeln('El valor de la clave debe de ser mayor o igual a 1')
     end;
   until (clave>=1);
+  CambiaClave:=Clave;
 end;
 //=======================================================================================
 
@@ -264,9 +265,9 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
 Begin
   clrscr;
   Clave:=1;
+  Clave:=CambiaClave(Clave,'jugador');
   Piedra:=1;
-  CambiaClave(Clave,'jugador');
-  Readln(Piedra);
+  Piedra:=CambiaClave(Piedra,'Piedra');
   Coincidencia_de_Clave(Clave,Piedra);
   writeln('llegaste al final del programa pricipal');
   readln;
