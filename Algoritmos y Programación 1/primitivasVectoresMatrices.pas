@@ -1,3 +1,4 @@
+
 Program primitivas;
 
 Const 
@@ -24,7 +25,6 @@ Begin
       writeln('Numero de ',mensaje,' invalidas');
   Until  (filcol>=2) And (filcol<=limi);
   validarDimensiones := filcol;
-
 End;
 
 

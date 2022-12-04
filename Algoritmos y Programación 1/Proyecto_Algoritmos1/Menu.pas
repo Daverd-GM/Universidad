@@ -34,7 +34,7 @@ function versiesPrimo(numero:longint):boolean;
   else
   versiesPrimo:=false;{devuelve falso si no es primo}
  end;
-//===========================================================================================
+//===============================================================================================
 
 //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
 function Coincidencia_de_Clave(clave,piedra:integer):boolean;
@@ -42,67 +42,139 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   // Esta función determina si los números son iguales
   function numeros_iguales(Clave,Piedra:integer):boolean;
   Begin if (clave)<>(piedra) then numeros_iguales:=false; End;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si la Clave es multiplo de la Piedra o viceversa
   Function numeros_multiplo(Clave,Piedra:integer):boolean;
   begin if (Clave mod piedra <>0) and (piedra mod clave <>0) then Numeros_Multiplo:=false; end;
-  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si son números primos relativos
-  Function Numeros_Primos_relativos(Clave,Piedra:integer):boolean;
-    var c1,c2:longint;
+
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Esta función determina si uno de los números está contenido en el otro.
+  Function Contenido(Num,N: longint): boolean;
+    Var
+      p,m: string;
+      i: longint;
+      b: boolean;
     Begin
-      for c1:=1 to piedra/2 do
+      m := NumStr(n);
+      p := NumStr(num);
+      b := false;
+      If N<num Then
+        Begin
+          i := pos(m,p);
+          If (i<>0) Then
+            Begin
+              b := true;
+            End;
+        End
+      Else
+        Begin
+          i := pos(p,m);
+          If (i<>0) Then
+            Begin
+              b := true;
+            End;
+        End;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Esta función determina si uno de los números es el inverso del otro.
+  Function Inverso(n,num:longint): boolean;
+    Var
+      b: boolean;
+      c,i,inv: longint;
+    Begin
+      c := Digitos(num);
+      b := false;
+      For i := 1 To c Do
+        Begin
+          inv := (num Mod 10)+(inv*10);
+          num := num Div 10;
+        End;
+      If inv=n Then
+        Begin
+          b := true;
+        End;
+      inverso := b;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Esta función determina si el número de la piedra es “amigo” del número del explorador. y viseverza
+  Function Amigo(num,n:longint): boolean;
+    Var
+      n1,n2: longint;
+      b: boolean;
+    //funcion para optimizar este proceso
+    Function SumaDivisores(n:longint): longint;
+      Var
+        i,suma,d: longint;
       Begin
-        for c2:=1 to clave/2
+        suma := 0;
+        For i := 1 To (n) Do
+          Begin
+            If ((n Mod i)=0) Then
+              Begin
+                suma := suma+i;
+              End;
+          End;
+        SumaDivisores := suma;
       End;
+
+  
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
-  var Eleccion:Byte;
-  Begin
-   readln(Debug_Access);
-   if Debug_Access='Admin' then
+    var Eleccion:Byte;
     Begin
-      writeln('entraste al menú de Debug');
-      writeln('1:determina si los números iguales');
-      Writeln('2:determina si la clave es multiplo de de la piedra y viceversa');
-      writeln('3:determina si "" ');
-      writeln('4:determina si "" ');
-      writeln('5:determina si "" ');
-      writeln('6:determina si "" ');
-      writeln('7:determina si "" ');
-      readln(Eleccion);
-      case Eleccion of
-        1:Begin
-          Numeros_Iguales(Clave,Piedra);
-          if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
+      readln(Debug_Access);
+      if Debug_Access='Admin' then
+      Begin
+        writeln('entraste al menú de Debug');
+        writeln('1:determina si los números iguales');
+        Writeln('2:determina si la clave es multiplo de de la piedra y viceversa');
+        writeln('3:determina si números triangulares');
+        writeln('4:determina si "" ');
+        writeln('5:determina si uno de los números está contenido en el otro.');
+        writeln('6:determina si uno de los números es el inverso del otro.');
+        writeln('7:determina si el número de la piedra es “amigo” del número del explorador y viseverza.');
+        readln(Eleccion);
+        case Eleccion of
+          1:Begin
+            Numeros_Iguales(Clave,Piedra);
+            if (Numeros_Iguales(Clave,Piedra))=true then writeln('Los números son iguales') else writeln('Los números no son iguales');
+          End;
+          2:Begin
+            Numeros_Multiplo(Clave,Piedra);
+            if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
+          End;
+          3:Begin
+              Triangular(Clave,Piedra);
+            if (Triangular(Clave,Piedra))=true then writeln('Los números son Triangulares') else writeln('Los números no son triangulares');
+          End;
+          4:Begin
+            Writeln(1);
+          End;
+          5:Begin
+            Contenido(Clave,Piedra);
+            if (Contenido(Clave,Piedra))=true then writeln('Uno de los n�meros est� contenidos uno dentro del otro') else writeln('Ninguno de los números esta contenido dentro del otro');
+            End;
+          6:Begin
+            Inverso(Clave,Piedra);
+            if(Inverso(Clave,Piedra))=true then writeln('Los números son Inverso') else writeln('Los números no son Inversos');
+          End;
+          7:Begin
+            Amigo(Clave,Piedra);
+            if (Amigo(Clave,Piedra))=true then writeln('Los números son Amigos') else writeln('Los números no son Amigos');
+          End;
         End;
-        2:Begin
-         Numeros_Multiplo(Clave,Piedra);
-         if (Numeros_Multiplo(Clave,Piedra))=true then writeln('Los números son múltiplos') else writeln('Los números no son múltiplos');
-        End;
-        3:Begin
-          Writeln(1);
-        End;
-        4:Begin
-          Writeln(1);
-        End;
-        6:Begin
-          Writeln(1);
-        End;
-        7:Begin
-          Writeln(1);
-        End;
-      End;
-      writeln('quiere seleccionar otra opción?');
+        writeln('quiere seleccionar otra opción?');
+      end;
+    End;
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    begin
+      Menu_Clave(clave_debug);
+      if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
     end;
-  End;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- begin
-  Menu_Clave(clave_debug);
-  if (numeros_iguales(Clave,Piedra)) or (numeros_multiplo(Clave,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
- end;
-//======================================================================================
+//=======================================================================================
 
 Begin
   clrscr;
