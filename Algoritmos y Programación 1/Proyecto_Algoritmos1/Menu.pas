@@ -223,7 +223,7 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
           End;
           5:Begin
             Contenido(Clave,Piedra);
-            if (Contenido(Clave,Piedra))=true then writeln('Uno de los n�meros est� contenidos uno dentro del otro') else writeln('Ninguno de los números esta contenido dentro del otro');
+            if (Contenido(Clave,Piedra))=true then writeln('Uno de los números está contenidos uno dentro del otro') else writeln('Ninguno de los números esta contenido dentro del otro');
             End;
           6:Begin
             Inverso(Clave,Piedra);
