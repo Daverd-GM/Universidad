@@ -207,11 +207,13 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(debug_access:string);
-    var Eleccion:Byte;
+    var Eleccion:Byte; salir:Char;
     Begin
       debug_access:='';
+      Salir:='N';
       readln(Debug_Access);
       if Debug_Access='Admin' then
+      repeat
       Begin
         writeln('entraste al menú de Debug');
         writeln('1:determina si los números iguales');
@@ -251,7 +253,9 @@ function Coincidencia_de_Clave(clave,piedra:integer):boolean;
             if (Amigo(Clave,Piedra))=true then writeln('Los números son Amigos') else writeln('Los números no son Amigos');
           End;
         End;
-        writeln('quiere seleccionar otra opción?');
+        writeln('quiere seleccionar otra opción del menú? escriba "n" para no y "y" para si');
+        readln(salir);
+      until (salir='n');  
       end;
     End;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
