@@ -19,21 +19,7 @@ uses CRT;
 
 var Clave,Piedra:longint;
 
-//Esta función verifica si un número es primo o no
-function versiesPrimo(numero:longint):boolean;
- var divisores,VarControl:integer;
- Begin
-  divisores:=0;
-  for varControl := 1 to numero/2 do
-  Begin
-    if numero mod varControl = 0 then
-    divisores := divisores + 1;
-  end;
-  if divisores = 2 then
-  versiesPrimo:=true{devuelve verdad si es primo}
-  else
-  versiesPrimo:=false;{devuelve falso si no es primo}
- end;
+
 //===============================================================================================
 
 //Esta función determina si la clave y piedran cumplen con alguno de los requisito de moverse
