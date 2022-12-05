@@ -3,7 +3,7 @@
     This file is part of Proyecto Algoritmos y programación 1
     Copyright (c) 2022 by David Hidalgo CI: 29.827.224 y Daniel Castellanos CI:30.142.703
 
-    ''
+    'Esta es la Primera entrega'
 
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
