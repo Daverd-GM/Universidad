@@ -364,7 +364,6 @@ Begin
   Clave_Jugador:=CambiaClave(Clave_Jugador,'jugador');
   Piedra:=CambiaClave(Piedra,'Piedra');
   (*Escribir Admin para entrar al menú*)
-  Coincidencia_de_Clave(Clave_Jugador,Piedra);
   if Coincidencia_de_Clave(Clave_Jugador,Piedra) then
   begin
     Writeln('El Personaje se Mueve');
