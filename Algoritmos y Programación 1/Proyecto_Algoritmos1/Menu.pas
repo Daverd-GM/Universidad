@@ -227,6 +227,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:integer):boolean;
     Begin
       debug_access:='';
       repetir:='N';
+      Writeln('escriba "Admin" para ver el menú');
       Readln(Debug_Access);
       if Debug_Access='Admin' then
       Begin
@@ -353,7 +354,8 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:integer):boolean;
     begin
       Debug_Access:='';
       Menu_Clave(Debug_Access);
-      if (numeros_iguales(Clave_Jugador,Piedra)) or (numeros_multiplo(Clave_Jugador,Piedra)) or (Triangular(Clave_Jugador,Piedra)) or (Contenido(Clave_Jugador,Piedra)) or (Inverso(Clave_Jugador,Piedra)) or (Amigo(Clave_Jugador,Piedra)) then Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
+      if (numeros_iguales(Clave_Jugador,Piedra)) or (numeros_multiplo(Clave_Jugador,Piedra)) or (Triangular(Clave_Jugador,Piedra)) or (Contenido(Clave_Jugador,Piedra)) or (Inverso(Clave_Jugador,Piedra)) or (Amigo(Clave_Jugador,Piedra)) then
+        Coincidencia_de_Clave:=true else Coincidencia_de_Clave:=False;
     end;
 //=======================================================================================
 
