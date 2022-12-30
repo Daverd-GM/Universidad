@@ -26,6 +26,7 @@ Datos=record
 end;
 
 var Jugador,Piedra:Datos;
+Mapa_Actual,Mapa_Nuevo: text;
 
 //Funcion para generar un Jugador al azar
 function Rellenar_Jugador_Piedra(Actual:Datos):Datos;
@@ -414,14 +415,51 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     • White = 15 
   }
   function Coincidencia_de_Color(Color_Jugador,Color_Piedra:Byte):Boolean;
+    function Colores_Iguales(Color_Jugador,Color_Piedra:Byte):Boolean;
+    begin
+      if Color_Jugador=Color_Piedra then
+      begin
+        Colores_Iguales:=True;
+      end
+      else
+      begin
+        Colores_Iguales:=False;
+      end;
+    end;
   begin
-    Coincidencia_de_Color:=True;
+    
+    if Colores_Iguales(Color_Jugador,Color_Piedra) then
+    begin
+      Coincidencia_de_color:=true;
+    end
+    else
+    begin
+      Coincidencia_de_Color:=False
+    end;
   end;
 //=======================================================================================
+//Esta función determina si se cumple algún requisito para moverse
+function Te_Mueves(Jugador,Piedra:Datos):Boolean;
+begin
+  if Coincidencia_de_Clave(Jugador.Clave,Piedra.Clave) or coincidencia_de_Color(jugador.Color,Piedra.Color) then
+  begin
+    Te_Mueves:=True;
+    Writeln('Por lo tanto El Personaje se Mueve');
+  end
+  else
+  begin
+    Te_Mueves:=False;
+    Writeln('Por lo tanto El Personaje NO se mueve')
+  end;
+end;
+//=======================================================================================
+
 Begin
   clrscr;
-  Jugador.Clave:=CambiaClave(Jugador.Clave,'jugador');
-  Piedra.Clave:=CambiaClave(Piedra.Clave,'Piedra');
+  Jugador.Clave:=CambiaClave(Jugador.Clave,'clave de jugador');
+  Piedra.Clave:=CambiaClave(Piedra.Clave,'clace de Piedra');
+  Jugador.Color:=CambiaClave(Jugador.Clave,'color de jugador');
+  Piedra.Color:=CambiaClave(Piedra.Clave,'color de Piedra');
   (*Escribir Admin para entrar al menú*)
   if Coincidencia_de_Clave(Jugador.Clave,Piedra.Clave) then
   begin
@@ -431,7 +469,7 @@ Begin
   begin
     Writeln('El Personaje no se mueve');
   end;
-    if Coincidencia_de_Color(Jugador.Clave,Piedra.Clave) then
+    if Coincidencia_de_Color(Jugador.Color,Piedra.Color) then
   begin
     Writeln('El Personaje se Mueve por el color');
   end
@@ -439,6 +477,7 @@ Begin
   begin
     Writeln('El Personaje no se mueve');
   end;
+  Te_Mueves(Jugador,Piedra);
   Writeln('llegaste al final del programa pricipal, hasta la próxima');
   Readln;
 end.
