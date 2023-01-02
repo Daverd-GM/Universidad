@@ -25,7 +25,7 @@ Datos=record
   Color:Byte;
 end;
 
-var Jugador,Piedra:Datos;
+Var Jugador,Piedra:Datos;
 Mapa_Actual,Mapa_Nuevo: text;
 
 //Funcion para generar un Jugador al azar
@@ -98,7 +98,7 @@ End;
 
 //Esta función determina si las claves del jugador y la piedra cumplen con alguno de los requisito para moverse
 function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
-  var Debug_Access:String;
+  Var Debug_Access:String;
   // Esta función determina si los números son iguales
   function numeros_iguales(Clave_Jugador,Piedra:Integer):Boolean;
     Begin if (Clave_Jugador)<>(piedra) then numeros_iguales:=False; End;
@@ -142,7 +142,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si son números primos relativos
   function Primos_Relativos(Clave_Jugador,piedra:Integer):Boolean;
-  var
+  Var
     n1,n2,divisores,VarControl:Integer;
   begin
     divisores:=0;
@@ -241,7 +241,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(Debug_Access:String);
-    var Eleccion:Byte; intercambio,repetir:Char;
+    Var Eleccion:Byte; intercambio,repetir:Char;
     Begin
       debug_access:='';
       repetir:='N';
@@ -427,7 +427,6 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       end;
     end;
   begin
-    
     if Colores_Iguales(Color_Jugador,Color_Piedra) then
     begin
       Coincidencia_de_color:=true;
