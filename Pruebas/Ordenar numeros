@@ -1,0 +1,51 @@
+
+Program magico;
+
+Const 
+  N = 20;
+
+Type 
+  matriz = array[1..N,1..N] Of integer;
+
+Var 
+  cuadrado: matriz;
+  filas,columnas,max: byte;
+
+Procedure imprimir_matriz(m:matriz; fil,col:integer);
+
+Var 
+  i,j: integer;
+Begin
+  writeln;
+  writeln('Contenido de la Matriz: ');
+  For i:=1 To fil Do
+    Begin
+      For j:=1 To col Do
+        Begin
+          write(m[i,j],'  ');
+        End;
+      writeln;
+    End;
+End;
+Procedure llenar_matriz_random(Var m:matriz; fil,col:integer);
+
+Var 
+  i,j: integer;
+Begin
+  randomize;
+  For i:=1 To fil Do
+    Begin
+      For j:=1 To col Do
+        Begin
+          m[i,j] := random(10000)+1;
+        End;
+    End;
+End;
+
+Begin
+    writeln('indique orden de la matrix(max=20)');
+    readln(max);
+    llenar_matriz_random(cuadrado,max);
+    imprimir_matriz(Cuadrado,Max)
+    readln;
+End.

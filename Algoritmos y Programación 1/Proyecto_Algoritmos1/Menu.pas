@@ -17,27 +17,27 @@ Program Entrega1;
 
 uses CRT;
 
-Const Max_Color = 10;
+const Max_Color=11;
+limite=50;
+type 
+Datos=record
+  Clave:LongInt;
+  Color:Byte;
+end;
+Matriz=array[1..limite,1..limite] of Datos;
 
-Type 
-  Datos = Record
-            Clave: LongInt;
-            Color: Byte;
-End;
+Var Jugador,Piedra:Datos;
+Mapa: Matriz;
 
-Var Jugador,Piedra: Datos;
-  Mapa_Actual,Mapa_Nuevo: text;
-
-  //Funcion para generar un Jugador al azar
-
-Function Rellenar_Jugador_Piedra(Actual:Datos): Datos;
-Begin
-  delay(500);
+//Funcion para generar un Jugador/piedra al azar
+function Rellenar_Jugador_Piedra(Actual:Datos):Datos;
+begin
+  Delay(1);
   randomize;
-  Actual.Clave := random(1000)+2;
-  Actual.color := Random(Max_Color)+1;
-  Rellenar_Jugador_Piedra := Actual;
-End;
+  Actual.Clave:=random(1000000);
+  Actual.color:=Random(Max_Color);
+  Rellenar_Jugador_Piedra:=Actual;
+end;
 
 //Función que me permite cambiar el valor de la clave del jugador o piedra
 
@@ -451,14 +451,29 @@ End;
     Begin
       Debug_Access := '';
       Menu_Clave(Debug_Access);
-      If (numeros_iguales(Clave_Jugador,Piedra)) Or (numeros_multiplo(Clave_Jugador,Piedra
-         )) Or (Triangular(Clave_Jugador,Piedra)) Or (Contenido(Clave_Jugador,Piedra)) Or
-         (Inverso(Clave_Jugador,Piedra)) Or (Amigo(Clave_Jugador,Piedra)) Then
-        Coincidencia_de_Clave := True
-      Else Coincidencia_de_Clave := False;
+      if (numeros_iguales(Clave_Jugador,Piedra)) or (numeros_multiplo(Clave_Jugador,Piedra)) or (Triangular(Clave_Jugador,Piedra)) or (Contenido(Clave_Jugador,Piedra)) or (Inverso(Clave_Jugador,Piedra)) or (Amigo(Clave_Jugador,Piedra)) then
+        Coincidencia_de_Clave:=True else Coincidencia_de_Clave:=False;
+    end;
+//=======================================================================================
+//Función que transforma los colores de la profe a los colores de CRT
+  Function Transformar_color(Color_Entrada:Byte): Byte;
+  Begin
+    Case Color_Entrada Of 
+      0: Transformar_color := 7;
+      1: Transformar_color := 15;
+      2: Transformar_color := 14;
+      3: Transformar_color := 2;
+      4: Transformar_color := 6;
+      5: Transformar_color := 1;
+      6: Transformar_color := 5;
+      7: Transformar_color := 0;
+      8: Transformar_color := 13;
+      9: Transformar_color := 4;
+      10: Transformar_color := 12;
     End;
-//==============================================================================
-//Esta función determina si los colores del jugador y la piedra cumplen con alg
+  End;
+//=======================================================================================
+//Esta función determina si los colores del jugador y la piedra cumplen con alguno de los requisito para moverse
   (*
     COINCIDENCIA DE EL COLOR
     Se asumirá la existencia de solo hasta 10 colores en la pared. Estos son;
@@ -496,55 +511,159 @@ End;
     • Yellow = 14 
     • White = 15 
   }
-
-  Function Coincidencia_de_Color(Color_Jugador,Color_Piedra:Byte): Boolean;
-
-    Function Colores_Iguales(Color_Jugador,Color_Piedra:Byte): Boolean;
+  function Coincidencia_de_Color(Color_Jugador,Color_Piedra:Byte):Boolean;
+    function Colores_Iguales(Color_Jugador,Color_Piedra:Byte):Boolean;
+    begin
+      if Color_Jugador=Color_Piedra then
+      begin
+        Colores_Iguales:=True;
+      end
+      else
+      begin
+        Colores_Iguales:=False;
+      end;
+    end;
+  begin
+    if Colores_Iguales(Color_Jugador,Color_Piedra) and (Color_Piedra<>0) then
+    begin
+      Coincidencia_de_color:=true;
+    end
+    else
+    begin
+      Coincidencia_de_Color:=False
+    end;
+  end;
+//=======================================================================================
+//Esta función determina si se cumple algún requisito para moverse
+function Te_Mueves(Jugador,Piedra:Datos):Boolean;
+begin
+  if Coincidencia_de_Clave(Jugador.Clave,Piedra.Clave) or coincidencia_de_Color(jugador.Color,Piedra.Color) then
+  begin
+    Te_Mueves:=True;
+    Writeln('Por lo tanto El Personaje se Mueve');
+  end
+  else
+  begin
+    Te_Mueves:=False;
+    Writeln('Por lo tanto El Personaje NO se mueve')
+  end;
+end;
+//=======================================================================================
+//Procedimiento que crea una matríz de forma interactiva
+procedure Crear_Mapa_Interactivo(Mapa:Matriz);
+Var
+Y,X: Byte; caract:char;
+  //Función que valida las dimensiones
+    Function validarDimensiones(filcol,limi:Byte; mensaje:String): Byte;
     Begin
-      If Color_Jugador=Color_Piedra Then
+      writeln;
+      Repeat
+        writeln('Indicar ',mensaje,' de la matriz maxímo ', limite);
+        readln(filcol);
+        If (filcol<=1) Or (filcol>limi) Then
+          writeln('Numero de ',mensaje,' invalidas');
+      Until  (filcol>=2) And (filcol<=limi);
+      validarDimensiones := filcol;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //Procedimiento que llena la matríz de forma Manual
+    Procedure llenar_matriz_manual(Var m:matriz; fil,col:integer);
+    Var 
+      i,j: integer;
+    Begin
+      For i:=1 To fil Do
         Begin
-          Colores_Iguales := True;
-        End
-      Else
-        Begin
-          Colores_Iguales := False;
+          For j:=1 To col Do
+            Begin
+              writeln('indique la clave en la posicion: [',i, ' ' ,j,']');
+              readln(m[i,j].Clave);
+              writeln('indique color en la posicion: [',i, ' ' ,j,']');
+              readln(m[i,j].Color);
+            End;
         End;
     End;
-  Begin
-    If Colores_Iguales(Color_Jugador,Color_Piedra) Then
-      Begin
-        Coincidencia_de_color := true;
-      End
-    Else
-      Begin
-        Coincidencia_de_Color := False
-      End;
-  End;
-//==============================================================================
-//Esta función determina si se cumple algún requisito para moverse
-
-Function Te_Mueves(Jugador,Piedra:Datos): Boolean;
-Begin
-  If Coincidencia_de_Clave(Jugador.Clave,Piedra.Clave) Or coincidencia_de_Color(jugador.
-     Color,Piedra.Color) Then
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //Procedimiento que llena la matríz de forma aleatoria
+    Procedure llenar_matriz_random(Var m:matriz; fil,col:integer);
+    Var 
+      i,j: integer;
     Begin
-      Te_Mueves := True;
-      Writeln('Por lo tanto El Personaje se Mueve');
-    End
-  Else
-    Begin
-      Te_Mueves := False;
-      Writeln('Por lo tanto El Personaje NO se mueve')
+      For i:=1 To fil Do
+        Begin
+          For j:=1 To col Do
+            Begin
+              m[i,j]:=Rellenar_Jugador_Piedra(Piedra);
+            End;
+        End;
     End;
-End;
-//==============================================================================
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //Pocedimiento para imprimir matriz
+    Procedure imprimir_matriz(m:matriz; fil,col:integer);
+    Var 
+      i,j: integer;
+    Begin
+      writeln;
+      writeln('Contenido de la Matriz: ');
+      For i:=1 To fil Do
+        Begin
+          For j:=1 To col Do
+            Begin
+              TextBackground(Transformar_color(m[i,j].Color));
+              write((m[i,j].clave):6,'  ');
+            End;
+          TextBackground(0);
+          writeln;
+        End;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+begin
+  Y:= validarDimensiones(Y,limite,'altura');
+  X:= validarDimensiones(X,limite,'ancho');
+  repeat
+    writeln('Como desea rellenar la matriz. Indique r para random y m para manual');
+    Readln(caract);
+    caract:= upcase(caract);
+    case caract of
+      'R':begin
+        llenar_matriz_random(Mapa,Y,X);
+      end;
+      'M':begin
+        llenar_matriz_manual(Mapa,Y,X);
+      end;
+    else
+    begin
+      writeln('Su respuesta no es valida, intente de nuevo');
+    end;
+    End;
+  Until((caract='M') or (caract='R'));
+  imprimir_matriz(Mapa,Y,X);
+end;
+//=======================================================================================
+//Procedimiento que maneja al jugador
+  procedure Jugador_Funcionamiento(var Jugador:Datos; Var Mapa:Matriz);
+  //movimiento prueba
+  
+  begin
+    if Te_Mueves(Jugador,Piedra); then
+    begin
+      sound(200);
+      Delay(500);
+      NoSound;
+    end;
+  end;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  begin
+    
+  end;
+//=======================================================================================
 
 Begin
   clrscr;
-  Jugador.Clave := CambiaClave(Jugador.Clave,'clave de jugador');
-  Piedra.Clave := CambiaClave(Piedra.Clave,'clace de Piedra');
-  Jugador.Color := CambiaClave(Jugador.Clave,'color de jugador');
-  Piedra.Color := CambiaClave(Piedra.Clave,'color de Piedra');
+  Crear_Mapa_Interactivo(Mapa);
+  Jugador.Clave:=CambiaClave(Jugador.Clave,'clave de jugador');
+  Piedra.Clave:=CambiaClave(Piedra.Clave,'clace de Piedra');
+  Jugador.Color:=CambiaClave(Jugador.Clave,'color de jugador');
+  Piedra.Color:=CambiaClave(Piedra.Clave,'color de Piedra');
   (*Escribir Admin para entrar al menú*)
   If Coincidencia_de_Clave(Jugador.Clave,Piedra.Clave) Then
     Begin
