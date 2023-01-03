@@ -17,23 +17,25 @@ Program Entrega1;
 
 uses CRT;
 
-const Max_Color=10;
-
+const Max_Color=11;
+limite=50;
 type 
 Datos=record
   Clave:LongInt;
   Color:Byte;
 end;
+Matriz=array[1..limite,1..limite] of Datos;
 
 Var Jugador,Piedra:Datos;
-Mapa_Actual,Mapa_Nuevo: text;
+Mapa: Matriz;
 
-//Funcion para generar un Jugador al azar
+//Funcion para generar un Jugador/piedra al azar
 function Rellenar_Jugador_Piedra(Actual:Datos):Datos;
 begin
+  Delay(1);
   randomize;
-  Actual.Clave:=random(1000)+2;
-  Actual.color:=Random(Max_Color)+1;
+  Actual.Clave:=random(1000000);
+  Actual.color:=Random(Max_Color);
   Rellenar_Jugador_Piedra:=Actual;
 end;
 
@@ -376,6 +378,24 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         Coincidencia_de_Clave:=True else Coincidencia_de_Clave:=False;
     end;
 //=======================================================================================
+//Función que transforma los colores de la profe a los colores de CRT
+  Function Transformar_color(Color_Entrada:Byte): Byte;
+  Begin
+    Case Color_Entrada Of 
+      0: Transformar_color := 7;
+      1: Transformar_color := 15;
+      2: Transformar_color := 14;
+      3: Transformar_color := 2;
+      4: Transformar_color := 6;
+      5: Transformar_color := 1;
+      6: Transformar_color := 5;
+      7: Transformar_color := 0;
+      8: Transformar_color := 13;
+      9: Transformar_color := 4;
+      10: Transformar_color := 12;
+    End;
+  End;
+//=======================================================================================
 //Esta función determina si los colores del jugador y la piedra cumplen con alguno de los requisito para moverse
   (*
     COINCIDENCIA DE EL COLOR
@@ -427,7 +447,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       end;
     end;
   begin
-    if Colores_Iguales(Color_Jugador,Color_Piedra) then
+    if Colores_Iguales(Color_Jugador,Color_Piedra) and (Color_Piedra<>0) then
     begin
       Coincidencia_de_color:=true;
     end
@@ -452,9 +472,117 @@ begin
   end;
 end;
 //=======================================================================================
+//Procedimiento que crea una matríz de forma interactiva
+procedure Crear_Mapa_Interactivo(Mapa:Matriz);
+Var
+Y,X: Byte; caract:char;
+  //Función que valida las dimensiones
+    Function validarDimensiones(filcol,limi:Byte; mensaje:String): Byte;
+    Begin
+      writeln;
+      Repeat
+        writeln('Indicar ',mensaje,' de la matriz maxímo ', limite);
+        readln(filcol);
+        If (filcol<=1) Or (filcol>limi) Then
+          writeln('Numero de ',mensaje,' invalidas');
+      Until  (filcol>=2) And (filcol<=limi);
+      validarDimensiones := filcol;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //Procedimiento que llena la matríz de forma Manual
+    Procedure llenar_matriz_manual(Var m:matriz; fil,col:integer);
+    Var 
+      i,j: integer;
+    Begin
+      For i:=1 To fil Do
+        Begin
+          For j:=1 To col Do
+            Begin
+              writeln('indique la clave en la posicion: [',i, ' ' ,j,']');
+              readln(m[i,j].Clave);
+              writeln('indique color en la posicion: [',i, ' ' ,j,']');
+              readln(m[i,j].Color);
+            End;
+        End;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //Procedimiento que llena la matríz de forma aleatoria
+    Procedure llenar_matriz_random(Var m:matriz; fil,col:integer);
+    Var 
+      i,j: integer;
+    Begin
+      For i:=1 To fil Do
+        Begin
+          For j:=1 To col Do
+            Begin
+              m[i,j]:=Rellenar_Jugador_Piedra(Piedra);
+            End;
+        End;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //Pocedimiento para imprimir matriz
+    Procedure imprimir_matriz(m:matriz; fil,col:integer);
+    Var 
+      i,j: integer;
+    Begin
+      writeln;
+      writeln('Contenido de la Matriz: ');
+      For i:=1 To fil Do
+        Begin
+          For j:=1 To col Do
+            Begin
+              TextBackground(Transformar_color(m[i,j].Color));
+              write((m[i,j].clave):6,'  ');
+            End;
+          TextBackground(0);
+          writeln;
+        End;
+    End;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+begin
+  Y:= validarDimensiones(Y,limite,'altura');
+  X:= validarDimensiones(X,limite,'ancho');
+  repeat
+    writeln('Como desea rellenar la matriz. Indique r para random y m para manual');
+    Readln(caract);
+    caract:= upcase(caract);
+    case caract of
+      'R':begin
+        llenar_matriz_random(Mapa,Y,X);
+      end;
+      'M':begin
+        llenar_matriz_manual(Mapa,Y,X);
+      end;
+    else
+    begin
+      writeln('Su respuesta no es valida, intente de nuevo');
+    end;
+    End;
+  Until((caract='M') or (caract='R'));
+  imprimir_matriz(Mapa,Y,X);
+end;
+//=======================================================================================
+//Procedimiento que maneja al jugador
+  procedure Jugador_Funcionamiento(var Jugador:Datos; Var Mapa:Matriz);
+  //movimiento prueba
+  
+  begin
+    if Te_Mueves(Jugador,Piedra); then
+    begin
+      sound(200);
+      Delay(500);
+      NoSound;
+    end;
+  end;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  begin
+    
+  end;
+//=======================================================================================
 
 Begin
   clrscr;
+  Crear_Mapa_Interactivo(Mapa);
   Jugador.Clave:=CambiaClave(Jugador.Clave,'clave de jugador');
   Piedra.Clave:=CambiaClave(Piedra.Clave,'clace de Piedra');
   Jugador.Color:=CambiaClave(Jugador.Clave,'color de jugador');
