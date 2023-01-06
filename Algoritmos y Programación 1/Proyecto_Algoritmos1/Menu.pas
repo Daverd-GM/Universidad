@@ -275,7 +275,136 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       amigo := b;
     End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+  (*// Este Procedure muestra un menú con todas las opciones para probarlas individualmente
+  Procedure Menu_Clave(Debug_Access:String);
+    Var Eleccion:Byte; intercambio,repetir:Char;
+    Begin
+      debug_access:='';
+      repetir:='N';
+      Writeln('escriba "Admin" para ver el menú');
+      Readln(Debug_Access);
+      if Debug_Access='Admin' then
+      Begin
+      repeat
+        Writeln('entraste al menú de Debug');
+        Writeln('-------------------------Menu de Opciones-------------------------');
+        Writeln('1:determina si los números iguales.');
+        Writeln('2:determina si la clave es multiplo de de la piedra y viceversa.');
+        Writeln('3:determina si números triangulares.');
+        Writeln('4:determina si son números primos.');
+        Writeln('5:determina si uno de los números está contenido en el otro.');
+        Writeln('6:determina si uno de los números es el inverso del otro.');
+        Writeln('7:determina si el número de la piedra es amigo del otro.');
+        Writeln('------------------------------------------------------------------');
+        Writeln('Indique su elección: ');
+        Readln(Eleccion);
+        case Eleccion of
+          1:Begin
+            repeat
+            Numeros_Iguales(Clave_Jugador,Piedra);
+            if (Numeros_Iguales(Clave_Jugador,Piedra))=True then Writeln('Los números son iguales') else Writeln('Los números no son iguales');
+            Writeln('¿quieres cambiar las claves del Jugador y de la piedra?');
+            Writeln('para si "Y" para no "N"');
+            Readln(intercambio);
+            if intercambio='y' then
+            begin
+              Clave_Jugador:=CambiaClave(Clave_Jugador,'Jugador');
+              piedra:=CambiaClave(piedra,'piedra');
+            end;
+            until (intercambio='n');
+          End;
+          2:Begin
+            repeat
+            Numeros_Multiplo(Clave_Jugador,Piedra);
+            if (Numeros_Multiplo(Clave_Jugador,Piedra))=True then Writeln('Los números son múltiplos') else Writeln('Los números no son múltiplos');
+            Writeln('¿quiere cambiar la clave del jugador y piedra?');
+            Writeln('para si "Y", para no "N"');
+            Readln(intercambio);
+            if intercambio='y' then
+            begin
+              Clave_Jugador:=CambiaClave(Clave_Jugador,'Jugador');
+              piedra:=CambiaClave(piedra,'piedra');
+            end;
+            Until (intercambio='n');
+          End;
+          3:Begin
+            repeat
+              Triangular(Clave_Jugador,Piedra);
+            if (Triangular(Clave_Jugador,Piedra))=True then Writeln('Los números son Triangulares') else Writeln('Los números no son triangulares');
+            Writeln('¿quiere cambiar la clave del jugador y piedra?');
+            Writeln('para si "Y", para no "N"');
+            Readln(intercambio);
+            if intercambio='y' then
+            begin
+              Clave_Jugador:=CambiaClave(Clave_Jugador,'Jugador');
+              piedra:=CambiaClave(piedra,'piedra');
+            end;
+            Until (intercambio='n');
+          End;
+          4:Begin
+            repeat
+            Primos_Relativos(Clave_Jugador,piedra);
+            if (Primos_Relativos(Clave_Jugador,Piedra))=True then Writeln('Los números son Primos relativos') else Writeln('Los números no son Primos Relativos');
+            Writeln('¿quiere cambiar la clave del jugador y piedra?');
+            Writeln('para si "Y", para no "N"');
+            Readln(intercambio);
+            if intercambio='y' then
+            begin
+              Clave_Jugador:=CambiaClave(Clave_Jugador,'Jugador');
+              piedra:=CambiaClave(piedra,'piedra');
+            end;
+            Until (intercambio='n');
+          End;
+          5:Begin
+            repeat
+            Contenido(Clave_Jugador,Piedra);
+            if (Contenido(Clave_Jugador,Piedra))=True then Writeln('Uno de los números está contenidos uno dentro del otro') else Writeln('Ninguno de los números esta contenido dentro del otro');
+            Writeln('¿quiere cambiar la clave del jugador y piedra?');
+            Writeln('para si "Y", para no "N"');
+            Readln(intercambio);
+            if intercambio='y' then
+            begin
+              Clave_Jugador:=CambiaClave(Clave_Jugador,'Jugador');
+              piedra:=CambiaClave(piedra,'piedra');
+            end;
+            Until (intercambio='n');
+          End;
+          6:Begin
+            repeat
+            Inverso(Clave_Jugador,Piedra);
+            if(Inverso(Clave_Jugador,Piedra))=True then Writeln('Los números son Inverso') else Writeln('Los números no son Inversos');
+            Writeln('¿quiere cambiar la clave del jugador y piedra?');
+            Writeln('para si "Y", para no "N"');
+            Readln(intercambio);
+            if intercambio='y' then
+            begin
+              Clave_Jugador:=CambiaClave(Clave_Jugador,'Jugador');
+              piedra:=CambiaClave(piedra,'piedra');
+            end;
+            Until (intercambio='n');
+          End;
+          7:Begin
+            repeat
+            Amigo(Clave_Jugador,Piedra);
+            if (Amigo(Clave_Jugador,Piedra))=True then Writeln('Los números son Amigos') else Writeln('Los números no son Amigos');
+            Writeln('¿quiere cambiar la clave del jugador y piedra?');
+            Writeln('para si "Y", para no "N"');
+            Readln(intercambio);
+            if intercambio='y' then
+            begin
+              Clave_Jugador:=CambiaClave(Clave_Jugador,'Jugador');
+              piedra:=CambiaClave(piedra,'piedra');
+            end;
+            Until (intercambio='n');
+          End;
+        End;
+        Writeln('quiere seleccionar otra opción del menú? escriba "n" para no y "y" para si');
+        Readln(repetir);
+        LowerCase(repetir);
+      until (repetir='n');
+      end;
+    End;
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*)
     begin
     //Debug_Access:='';
     //Menu_Clave(Debug_Access);
