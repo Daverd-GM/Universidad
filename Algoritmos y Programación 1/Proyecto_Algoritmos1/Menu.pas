@@ -750,6 +750,13 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
             end
             else
             begin
+              mapa[MovY1,MovX1].Color := 7;
+              mapa[MovY1,MovX1].Clave := 1;
+              mapa[MovY1,MovX1].Spawn := true;
+              MovY1 := MovX1-1;
+              mapa[MovY1,MovX1].Color := jugador.Color;
+              mapa[MovY1,MovX1].Clave := jugador.Clave;
+              mapa[MovY1,MovX1].spawn := jugador.spawn;
               if (Piedra_Tropezada.Color=mapa[MovY1,MovX1].Clave) and (Piedra_Tropezada.Clave=mapa[MovY1,MovX1].Clave) then
               begin
                 derrota(muertes1)
