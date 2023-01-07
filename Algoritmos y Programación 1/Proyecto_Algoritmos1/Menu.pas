@@ -18,17 +18,18 @@ Program Entrega1;
 uses CRT;
 
 const Max_Color=11;
-limite=50;
+limite=20;
 type 
 Datos=record
   Clave:LongInt;
   Color:Byte;
+  Spawn:Boolean;
 end;
 Matriz=array[1..(limite+3),1..(limite+3)] of Datos;
 
-Var Jugador,Piedra:Datos;
+Var Jugador1, Jugador2,Piedra:Datos;
 Mapa: Matriz;
-X,Y: Byte;
+X,Y,Bolso: Byte;
 
 //Funcion para generar un Jugador/piedra al azar
 function Rellenar_Jugador_Piedra(Actual:Datos):Datos;
@@ -36,9 +37,22 @@ begin
   Delay(1);
   randomize;
   Actual.Clave:=random(100000);
-  Actual.color:=Random(Max_Color);
+  Actual.Color:=Random(Max_Color);
+  Actual.Spawn:=False;
   Rellenar_Jugador_Piedra:=Actual;
 end;
+
+//Función que me permite cambiar el valor de la clave del jugador o piedra
+function CambiaDatos(Actual:Datos; tipo:String):Datos;
+begin
+  Writeln('Escriba la clave de', tipo);
+  Readln(Actual.Clave);
+  Writeln('Escriba el color de', tipo);
+  Readln(Actual.Color);
+  Actual.Spawn:=False;
+  CambiaDatos:=Actual;
+end;
+//=======================================================================================
 
 //Función que me permite cambiar el valor de la clave del jugador o piedra
 function CambiaClave(Clave:LongInt; Tipo:String): Integer;
@@ -59,7 +73,7 @@ end;
 function Digitos(N: LongInt): LongInt;
 Var
   i: LongInt;
-Begin
+begin
   i := 0;
   Repeat
     n := n Div 10;
@@ -74,12 +88,12 @@ function NumStr(num:LongInt): String;
 Var
   p: String;
   i,n,c,cont: LongInt;
-Begin
+begin
   p := '';
   i := num;
   cont := digitos(num);
   For c := 1 To cont Do
-    Begin
+    begin
       n := i Mod 10;
       Case n Of
         1: p := '1' + p;
@@ -104,7 +118,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   //Var Debug_Access:String;
   // Esta función determina si los números son iguales
   function numeros_iguales(Clave_Jugador,Piedra:Integer):Boolean;
-    Begin if (Clave_Jugador)<>(piedra) then numeros_iguales:=False; End;
+    begin if (Clave_Jugador)<>(piedra) then numeros_iguales:=False; End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Esta función determina si la Clave es multiplo de la Piedra o viceversa
   function numeros_multiplo(Clave_Jugador,Piedra:Integer):Boolean;
@@ -122,28 +136,28 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   Var
     i,tri: LongInt;
     b: Boolean;
-  Begin
+  begin
     tri := 0;
     b := False;
     if n<Num Then
-      Begin
+      begin
         For i := 1 To N Do
-          Begin
+          begin
             tri := tri+i;
           End;
         if tri=num Then
-          Begin
+          begin
             b := True;
           End;
       End
     Else
-      Begin
+      begin
         For i := 1 To num Do
-          Begin
+          begin
             tri := tri+i;
           End;
         if tri=n Then
-          Begin
+          begin
             b := True;
           End;
       End;
@@ -174,23 +188,23 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       p,m: String;
       i: LongInt;
       b: Boolean;
-    Begin
+    begin
       m:= NumStr(n);
       p:= NumStr(num);
       b:= False;
       if N<num Then
-        Begin
+        begin
           i:= pos(m,p);
           if (i<>0) Then
-            Begin
+            begin
               b:= True;
             End;
         End
       Else
-        Begin
+        begin
           i:= pos(p,m);
           if (i<>0) Then
-            Begin
+            begin
               b:= True;
             End;
         End;
@@ -202,17 +216,17 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     Var
       b: Boolean;
       c,i,inv: LongInt;
-    Begin
+    begin
       inv:=0;
       c := Digitos(num);
       b := False;
       For i := 1 To c Do
-        Begin
+        begin
           inv:= (num Mod 10)+(inv*10);
           num:= num Div 10;
         End;
       if inv=n Then
-        Begin
+        begin
           b:= True;
         End;
       inverso:=b;
@@ -227,23 +241,23 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     function SumaDivisores(n:LongInt): LongInt;
       Var
         i,suma: LongInt;
-      Begin
+      begin
         suma := 0;
         For i := 1 To (n) Do
-          Begin
+          begin
             if ((n Mod i)=0) Then
-              Begin
+              begin
                 suma := suma+i;
               End;
           End;
         SumaDivisores := suma;
       End;
-    Begin
+    begin
       N1 := SumaDivisores(n)-N;
       n2 := SumaDivisores(num)-num;
       b := False;
       if (n1=num) And (n2=n) Then
-        Begin
+        begin
           B := True;
         End;
       amigo := b;
@@ -252,13 +266,13 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   (*// Este Procedure muestra un menú con todas las opciones para probarlas individualmente
   Procedure Menu_Clave(Debug_Access:String);
     Var Eleccion:Byte; intercambio,repetir:Char;
-    Begin
+    begin
       debug_access:='';
       repetir:='N';
       Writeln('escriba "Admin" para ver el menú');
       Readln(Debug_Access);
       if Debug_Access='Admin' then
-      Begin
+      begin
       repeat
         Writeln('entraste al menú de Debug');
         Writeln('-------------------------Menu de Opciones-------------------------');
@@ -273,7 +287,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         Writeln('Indique su elección: ');
         Readln(Eleccion);
         case Eleccion of
-          1:Begin
+          1:begin
             repeat
             Numeros_Iguales(Clave_Jugador,Piedra);
             if (Numeros_Iguales(Clave_Jugador,Piedra))=True then Writeln('Los números son iguales') else Writeln('Los números no son iguales');
@@ -287,7 +301,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
             end;
             until (intercambio='n');
           End;
-          2:Begin
+          2:begin
             repeat
             Numeros_Multiplo(Clave_Jugador,Piedra);
             if (Numeros_Multiplo(Clave_Jugador,Piedra))=True then Writeln('Los números son múltiplos') else Writeln('Los números no son múltiplos');
@@ -301,7 +315,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
             end;
             Until (intercambio='n');
           End;
-          3:Begin
+          3:begin
             repeat
               Triangular(Clave_Jugador,Piedra);
             if (Triangular(Clave_Jugador,Piedra))=True then Writeln('Los números son Triangulares') else Writeln('Los números no son triangulares');
@@ -315,7 +329,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
             end;
             Until (intercambio='n');
           End;
-          4:Begin
+          4:begin
             repeat
             Primos_Relativos(Clave_Jugador,piedra);
             if (Primos_Relativos(Clave_Jugador,Piedra))=True then Writeln('Los números son Primos relativos') else Writeln('Los números no son Primos Relativos');
@@ -329,7 +343,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
             end;
             Until (intercambio='n');
           End;
-          5:Begin
+          5:begin
             repeat
             Contenido(Clave_Jugador,Piedra);
             if (Contenido(Clave_Jugador,Piedra))=True then Writeln('Uno de los números está contenidos uno dentro del otro') else Writeln('Ninguno de los números esta contenido dentro del otro');
@@ -343,7 +357,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
             end;
             Until (intercambio='n');
           End;
-          6:Begin
+          6:begin
             repeat
             Inverso(Clave_Jugador,Piedra);
             if(Inverso(Clave_Jugador,Piedra))=True then Writeln('Los números son Inverso') else Writeln('Los números no son Inversos');
@@ -357,7 +371,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
             end;
             Until (intercambio='n');
           End;
-          7:Begin
+          7:begin
             repeat
             Amigo(Clave_Jugador,Piedra);
             if (Amigo(Clave_Jugador,Piedra))=True then Writeln('Los números son Amigos') else Writeln('Los números no son Amigos');
@@ -388,7 +402,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
 //=======================================================================================
 //Función que transforma los colores de la profe a los colores de CRT
   Function Transformar_color(Color_Entrada:Byte): Byte;
-  Begin
+  begin
     Case Color_Entrada Of 
       0: Transformar_color := 7;
       1: Transformar_color := 15;
@@ -450,8 +464,43 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       else
         Colores_Iguales:=False;
     end;
+    function Variedad_Colores(Color_Jugador,Color_Piedra:Byte):Boolean;
+    begin
+      case Color_Jugador of
+        1: begin
+          if (Color_Piedra=10) or (Color_Piedra=9) or (Color_Piedra-2=Color_Jugador) or (Color_Piedra-1=Color_Jugador) then
+            Variedad_Colores:=true
+          else
+            Variedad_Colores:=false          
+        end;
+        2: begin
+          if (Color_Piedra=10) or (Color_Piedra-1=Color_Jugador) or (Color_Piedra+1=Color_Jugador) or (Color_Piedra+2=Color_Jugador) then
+            Variedad_Colores:=true
+          else
+            Variedad_Colores:=false          
+        end;
+        3..8: begin
+          if (Color_Piedra-2=Color_Jugador) or (Color_Piedra-1=Color_Jugador) or (Color_Piedra+1=Color_Jugador) or (Color_Piedra+2=Color_Jugador) then
+            Variedad_Colores:=true
+          else
+            Variedad_Colores:=false          
+        end;
+        9: begin
+          if (Color_Piedra-2=Color_Jugador) or (Color_Piedra-1=Color_Jugador) or (Color_Piedra+1=Color_Jugador) or (Color_Piedra=1) then
+            Variedad_Colores:=true
+          else
+            Variedad_Colores:=false          
+        end;
+        10: begin
+          if (Color_Piedra-2=Color_Jugador) or (Color_Piedra-1=Color_Jugador) or (Color_Piedra=1) or (Color_Piedra=2) then
+            Variedad_Colores:=true
+          else
+            Variedad_Colores:=false          
+        end;
+      end;
+    end;
   begin
-    if Colores_Iguales(Color_Jugador,Color_Piedra) then
+    if Colores_Iguales(Color_Jugador,Color_Piedra) or Variedad_Colores(Color_Jugador,Color_Piedra) then
     begin
       Coincidencia_de_color:=true;
     end
@@ -464,7 +513,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
 //Esta función determina si se cumple algún requisito para moverse
   function Te_Mueves(Jugador,Piedra:Datos):Boolean;
   begin
-    if (Coincidencia_de_Clave(Jugador.Clave,Piedra.Clave) or coincidencia_de_Color(jugador.Color,Piedra.Color)) and (Piedra.Color<>0) then
+    if (Coincidencia_de_Clave(jugador.Clave,Piedra.Clave) or coincidencia_de_Color(jugador.Color,Piedra.Color)) and (Piedra.Color<>0) then
     begin
       Te_Mueves:=True;
     end
@@ -478,13 +527,29 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     Procedure imprimir_matriz(m:matriz; fil,col:Integer);
     Var 
       i,j: Integer;
-    Begin
+    begin
       clrscr;
       writeln;
+      For j:=2 To (col+1) Do
+      Begin
+        If (m[1,j].Color=0) Then
+          Begin
+            TextBackground(0);
+            write('     ');
+            TextBackground(0);
+          End
+        Else
+          Begin
+            TextBackground(Transformar_color(m[1,j].Color));
+            write((m[1,j].Clave): 5);
+            TextBackground(0);
+          End;
+      End;
+      writeln;
       For i:=2 To (fil+1) Do
-        Begin
+        begin
           For j:=2 To (col+1) Do
-            Begin
+            begin
               if (m[i,j].Color=0) then
               begin
                 TextBackground(Transformar_color(m[i,j].Color));
@@ -494,43 +559,78 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
               else
               begin
                 TextBackground(Transformar_color(m[i,j].Color));
-                write((m[i,j].clave): 5);
+                write((m[i,j].Clave): 5);
                 TextBackground(0);
               end;
               
             End;
           writeln;
         End;
+      For j:=2 To (col+1) Do
+      Begin
+        If (m[fil+2,j].spawn) Then
+          Begin
+          TextBackground(0);
+          write('     ');
+          TextBackground(0);
+          End
+        Else
+          Begin
+          TextBackground(Transformar_color(m[fil+2,j].Color));
+          write((m[fil+2,j].Clave): 5);
+          TextBackground(0);
+          End;
+      End;
       writeln;
     End;
+//=======================================================================================
+//procedimiento de spawns
+    procedure Spawn(Var Mapa:Matriz; Jugador1, Jugador2:Datos);
+    //spawn del jugador
+      procedure SpawnJugador(Var mapa:Matriz; Jugador1, Jugador2:Datos);
+      begin
+        mapa[Y+2,2].Color := jugador1.Color;
+        mapa[Y+2,2].Clave := jugador1.Clave;
+        TextBackground(0);
+
+        mapa[Y+2,X].Color := jugador2.Color;
+        mapa[Y+2,X].Clave := jugador2.Clave;
+
+      end;
+    begin
+      SpawnJugador(Mapa,Jugador1,Jugador2);
+    end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 //Procedimiento que crea una matríz de forma interactiva
-  procedure Crear_Mapa_Interactivo(var Mapa:Matriz; Var X,Y: Byte);
+  procedure Crear_Mapa_Interactivo(Var Mapa:Matriz; Var X,Y: Byte);
   Var
   caract:char;
   //Función que valida las dimensiones
     Function validarDimensiones(filcol,limi:Byte; mensaje:String): Byte;
-    Begin
+    begin
       writeln;
       Repeat
         writeln('Indicar ',mensaje,' de la matriz maxímo ', limite);
         readln(filcol);
         filcol:=filcol;
-        If (filcol<=1) Or (filcol>limi) Then
+        if (filcol<=1) Or (filcol>limi) Then
           writeln('Numero de ',mensaje,' invalidas');
       Until  (filcol>=2) And (filcol<=limi);
       validarDimensiones := filcol;
     End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //Procedimiento que llena la matríz de forma Manual
-    Procedure llenar_matriz_manual(Var m:matriz; fil,col:Integer);
+    Procedure llenar_matriz_manual(Var m:matriz; Var fil,col:byte);
     Var 
       i,j: Integer;
-    Begin
+    begin
+      fil := validarDimensiones(fil,limite,'altura');
+      col := validarDimensiones(col,limite,'ancho');
       For i:=2 To (fil+1) Do
-        Begin
+        begin
           For j:=2 To (col+1) Do
-            Begin
+            begin
               writeln('indique la clave en la posicion: [',i, ' ' ,j,']');
               readln(m[i,j].Clave);
               writeln('indique color en la posicion: [',i, ' ' ,j,']');
@@ -540,14 +640,16 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     End;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //Procedimiento que llena la matríz de forma aleatoria
-    Procedure llenar_matriz_random(Var m:matriz; fil,col:Integer);
+    Procedure llenar_matriz_random(Var m:matriz; Var fil,col:byte);
     Var 
       i,j: Integer;
-    Begin
+    begin
+    fil := validarDimensiones(fil,limite,'altura');
+    col := validarDimensiones(col,limite,'ancho');
       For i:=2 To (fil+1) Do
-        Begin
+        begin
           For j:=2 To (col+1) Do
-            Begin
+            begin
               m[i,j]:=Rellenar_Jugador_Piedra(Piedra);
             End;
         End;
@@ -560,7 +662,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     begin
       for i := 2 to col+1 do
       begin
-        m[fil+2,i].Clave:=1; m[fil+2,i].Color:=8;//spawn
+        m[fil+2,i].Clave:=1; m[fil+2,i].Color:=7; m[fil+2,i].spawn:=true;//spawn
       end;
       {for i := 1 to col+2 do
       begin
@@ -580,12 +682,9 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       end;}
     end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  
   begin
-  Y:= validarDimensiones(Y,limite,'altura');
-  X:= validarDimensiones(X,limite,'ancho');
   repeat
-    writeln('Como desea rellenar la matriz. Indique r para random y m para manual');
+    writeln('Como desea rellenar la matriz. Indique R para random, A para archivo y M para manual');
     Readln(caract);
     caract:= upcase(caract);
     case caract of
@@ -603,25 +702,35 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   Until((caract='M') or (caract='R'));
   Bordes(Mapa,Y,X);
   imprimir_matriz(Mapa,Y,X);
+  Jugador1 := CambiaDatos(Jugador1,'l jugador 1');
+  Jugador2 := CambiaDatos(Jugador2,'l jugador 2');
+  spawn(mapa,Jugador1,Jugador2);
+  imprimir_matriz(Mapa,Y,X);
   end;
 //=======================================================================================
+
 //Procedimiento que maneja al jugador
-  procedure Jugador_Funcionamiento(var Jugador:Datos; Var Mapa:Matriz);
-  //Spawn del Jugador
-    procedure Spawn(var Mapa:Matriz);
+  procedure Jugador_Funcionamiento(Var Jugador:Datos; Var Mapa:Matriz);
+
+  //Procedimiento de condicion de victoria
+    procedure Derrota(Var Muertes:Byte);
     begin
-      GOTOXY(1,(Y+2));
-      TextBackground(Transformar_color(Jugador.Color));
-      write(Jugador.Clave:5);
-      GOTOXY(1,(Y+2));
+      if muertes<=3 then
+      begin
+        muertes:=muertes+1;
+        
+      end
+      else
+      begin       
+      end;
     end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //movimiento prueba
-    procedure Movimiento(var Mapa:Matriz);
+    procedure Movimiento(Var Mapa:Matriz);
     Var
-    Charac:char; MovX,MovY, gox,goy:byte;
+    Charac:char; MovX1,MovY1, gox,goy:byte; muertes1, muertes2:byte; piedra_tropezada:Datos;
     begin
-      MovX:=2; MovY:=Y+2;
+      MovX1:=2; MovY1:=Y+2; muertes1:=0; muertes2:= 0; piedra_tropezada.Color:=99; piedra_tropezada.Clave:=-10;
       repeat        
         repeat
           repeat
@@ -631,64 +740,105 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         until ((Charac='w') or (Charac='a') or (Charac='s') or (Charac='d'));
         case Charac of
           'w':begin
-            if te_Mueves(Jugador,mapa[MovY-1,MovX]) then
+            if te_Mueves(Jugador,mapa[MovY1-1,MovX1]) then
             begin
-              MovY:=MovY-1;
-              mapa[MovY,MovX].color:=Jugador.Color;
-              mapa[MovY,MovX].clave :=Jugador.Clave;
+              MovY1:=MovY1-1;
+              mapa[MovY1,MovX1].Color:=jugador.Color;
+              mapa[MovY1,MovX1].Clave :=jugador.Clave;
               imprimir_matriz(mapa,Y,X);  
-              GOTOXY((((MovX-1)*5)-2),MovY);        
+              GOTOXY((((MovX1-1)*5)-2),MovY1+1);        
             end
             else
             begin
-              sound(200);
-              Delay(500);
-              nosound;
+              if (Piedra_Tropezada.Color=mapa[MovY1,MovX1].Clave) and (Piedra_Tropezada.Clave=mapa[MovY1,MovX1].Clave) then
+              begin
+                derrota(muertes1)
+              end
+              else
+              begin
+                sound(200);
+                Delay(500);
+                nosound;
+                piedra_tropezada.Color:=mapa[MovY1,MovX1].Color;
+                piedra_tropezada.Clave:=mapa[MovY1,MovX1].Clave;
+              end;
+              
+              
             end;          
           end;
           'a':begin
-            if te_Mueves(Jugador,mapa[MovY,MovX-1]) Then
-            Begin
-              MovX := MovX-1;
-              mapa[MovY,MovX].color := jugador.Color;
-              mapa[MovY,MovX].clave := jugador.Clave;
+            if te_Mueves(Jugador,mapa[MovY1,MovX1-1]) Then
+            begin
+              if MovY1<>Y+2 then
+              begin
+              MovX1 := MovX1-1;
+              mapa[MovY1,MovX1].Color := jugador.Color;
+              mapa[MovY1,MovX1].Clave := jugador.Clave;
               imprimir_matriz(mapa,Y,X);
-              GOTOXY((((MovX-1)*5)-2),MovY);
+              GOTOXY((((MovX1-1)*5)-2),MovY1+1);
+              end
+              else
+              begin
+                mapa[MovY1,MovX1].Color := 7;
+                mapa[MovY1,MovX1].Clave := 1;
+                mapa[MovY1,MovX1].Spawn := true;
+                MovX1 := MovX1-1;
+                mapa[MovY1,MovX1].Color := jugador.Color;
+                mapa[MovY1,MovX1].Clave := jugador.Clave;
+                mapa[MovY1,MovX1].spawn := jugador.spawn;
+                imprimir_matriz(mapa,Y,X);
+                GOTOXY((((MovX1-1)*5)-2),MovY1+1);
+              end;
             End           
             Else
-              Begin
+              begin
                 sound(200);
                 Delay(500);
                 nosound;
               End;          
           end;
           's':begin
-            If te_Mueves(Jugador,mapa[MovY+1,MovX]) Then
-              Begin
-                MovY := MovY+1;
-                mapa[MovY,MovX].color := jugador.Color;
-                mapa[MovY,MovX].clave := jugador.clave;
+            if te_Mueves(Jugador,mapa[MovY1+1,MovX1]) Then
+              begin
+                MovY1 := MovY1+1;
+                mapa[MovY1,MovX1].Color := jugador.Color;
+                mapa[MovY1,MovX1].Clave := jugador.Clave;
                 imprimir_matriz(mapa,Y,X);
-                GOTOXY((((MovX-1)*5)-2),MovY);
+                GOTOXY((((MovX1-1)*5)-2),MovY1+1);
               End
             Else
-              Begin
+              begin
                 sound(200);
                 Delay(500);
                 nosound;
               End;
           end;
           'd':begin
-            If te_Mueves(Jugador,mapa[MovY,MovX+1]) Then
-              Begin
-                MovX := MovX+1;
-                mapa[MovY,MovX].color := jugador.Color;
-                mapa[MovY,MovX].clave := jugador.clave;
-                imprimir_matriz(mapa,Y,X);
-                GOTOXY((((MovX-1)*5)-2),MovY);
+            if te_Mueves(Jugador,mapa[MovY1,MovX1+1]) Then
+              begin
+                If MovY1<>Y+2 Then
+                  Begin
+                  MovX1 := MovX1+1;
+                  mapa[MovY1,MovX1].Color := jugador.Color;
+                  mapa[MovY1,MovX1].Clave := jugador.Clave;
+                  imprimir_matriz(mapa,Y,X);
+                  GOTOXY((((MovX1-1)*5)-2),MovY1+1);
+                End
+                Else
+                  Begin
+                  mapa[MovY1,MovX1].Color := 7;
+                  mapa[MovY1,MovX1].Clave := 1;
+                  mapa[MovY1,MovX1].Spawn := true;
+                  MovX1 := MovX1+1;
+                  mapa[MovY1,MovX1].Color := jugador.Color;
+                  mapa[MovY1,MovX1].Clave := jugador.Clave;
+                  mapa[MovY1,MovX1].spawn := jugador.spawn;
+                  imprimir_matriz(mapa,Y,X);
+                  GOTOXY((((MovX1-1)*5)-2),MovY1+1);
+                  End;
               End
             Else
-              Begin
+              begin
                 sound(200);
                 Delay(500);
                 nosound;
@@ -699,21 +849,21 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         until KeyPressed;
       until ReadKey='m';
     end;
+    
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   begin
-    jugador.Color:=CambiaClave(Jugador.Clave,'color de jugador');
-    Jugador.Clave:= CambiaClave(Jugador.clave,'el jugador');
-    spawn(mapa);
+
+
     Movimiento(mapa);
     
   end;
 //=======================================================================================
 
-Begin
+begin
   clrscr;
   TextBackground(0);
   Crear_Mapa_Interactivo(Mapa,X,Y);
-  Jugador_Funcionamiento(Jugador,Mapa);
+  Jugador_Funcionamiento(Jugador1,Mapa);
   {Jugador.Clave:=CambiaClave(Jugador.Clave,'clave de jugador');
   Piedra.Clave:=CambiaClave(Piedra.Clave,'clave de Piedra');
   Jugador.Color:=CambiaClave(Jugador.Clave,'color de jugador');
