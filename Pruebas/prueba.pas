@@ -17,60 +17,106 @@
 
 Program que;
 
-Uses crt;
 
 const Max_Color=10;
-
-type 
-Datos=record
-  Clave:LongInt;
-  Color:Byte;
-end;
-
-Var Jugador,Piedra:Datos;
-
-//Funcion para generar un Jugador al azar
-  function Rellenar_Jugador_Piedra(Actual:Datos):Datos;
+Var
+  CaracterC:Char;
+  X,Y:Byte;
+  Bolso1,Bolso2:Byte;
+//Procedimiento para Pasar de Caracteres a Números
+  procedure Caracter_a_Nuemero(Caracter:char; Var Numero:Byte);
   begin
-    Delay(500);
-    randomize;
-    Actual.Clave:=random(1000)+2;
-    Actual.color:=Random(Max_Color)+1;
-    Rellenar_Jugador_Piedra:=Actual;
-  end;
-//Procedimiento para mostrar valores
-  procedure Mostrar(x:Datos;y:String);
-  begin
-    Writeln('La Clave de', y ,' es: ', x.Clave);
-    Writeln('El Color de', y ,' es: ', x.Color);
-  end;
-//Función que determina si los colores cumplen con los requisitos
-  function Coincidencia_de_Color(Color_Jugador,Color_Piedra:Byte):Boolean;
-    function Colores_Iguales(Color_Jugador,Color_Piedra:Byte):Boolean;
-    begin
-      if Color_Jugador=Color_Piedra then
-        Colores_Iguales:=True
-      else
-        Colores_Iguales:=False;
+    Case Caracter Of 
+      '1': Numero := 1 + Numero*10;
+      '2': Numero := 2 + Numero*10;
+      '3': Numero := 3 + Numero*10;
+      '4': Numero := 4 + Numero*10;
+      '5': Numero := 5 + Numero*10;
+      '6': Numero := 6 + Numero*10;
+      '7': Numero := 7 + Numero*10;
+      '8': Numero := 8 + Numero*10;
+      '9': Numero := 9 + Numero*10;
+      '0': Numero := 0 + Numero*10;
     end;
-    function Colores_Varian(Color_Jugador,Color_Piedra:Byte):Boolean;
-    Type Colores= 'Blanco','Amarillo','Verde','Marron','Azul','Violeta','Negro','Rosado','Rojo','Anaranjado';
+End;
+//=============================================================================
+//Procedimiento que llena la Matriz por Archivos
+  procedure VerArchivoenPantalla(Var X,Y:Byte);
+  Var
+    CH:Char;
+    Entrada:text;
+  Begin
+    assign(Entrada,'C:\Datos\Entrada.txt');
+    Reset(entrada);
+    //primera linea, Dimensiones de la matriz
+    repeat
+      read(Entrada,CH);
+    until (CH='(');      
+    repeat
+      read(Entrada,CH);
+      writeln(ch);
+      Caracter_a_Nuemero(Ch,X);
+    until (CH=',');
+    writeln(X);
+    Repeat
+    read(entrada,CH);
+    Caracter_a_Nuemero(Ch,Y);
+    Until (CH=')');
+    Writeln(Y);
+    Readln(entrada,Ch);
+  //Segunda linea, bolsos
+    if (Ch='(') then
     begin
-      
-    end;
-  begin
-    if Colores_Iguales(Color_Jugador,Color_Piedra) then
-    begin
-      Coincidencia_de_color:=true;
+      Repeat
+        read(Entrada,CH);
+        writeln(ch);
+        Caracter_a_Nuemero(Ch,Bolso1);
+      Until (CH=',');
+      writeln(bolso1);
+      Repeat
+        read(Entrada,CH);
+      writeln(ch);
+        Caracter_a_Nuemero(Ch,Bolso2);
+      Until (CH=')');
+      writeln(bolso2);
+
+      Readln(entrada,Ch);
     end
     else
     begin
-      Coincidencia_de_Color:=False;
+      Repeat
+        read(Entrada,CH);
+      Until (CH='(');
+      Repeat
+        read(Entrada,CH);
+        Caracter_a_Nuemero(Ch,Bolso1);
+      Until (CH=',');
+      writeln(bolso1);
+      Repeat
+        read(Entrada,CH);
+      writeln(ch);
+        Caracter_a_Nuemero(Ch,Bolso2);
+      Until (CH=')');
+      writeln(bolso2);
+
+      Readln(entrada,Ch);
     end;
-  end;
+    Close(entrada);
+  End;
 begin
-  Jugador:=Rellenar_Jugador_Piedra(Jugador);
-  Mostrar(Jugador,'l Jugador');
-  Piedra:=Rellenar_Jugador_Piedra(Piedra);
-  Mostrar(Piedra,' la Piedra');
+  
+  {begin  
+    writeln;
+    Writeln('hola1');
+    reset(Mapa_Entrada);
+    Writeln('hola2');
+    while not (eof (Mapa_Entrada)) do
+    begin
+      readln(Mapa_Entrada, caracterC) ;
+      Write(caracterC);
+    end;
+    close(Mapa_Entrada);
+    Writeln('hola3')
+  end;}
+  VerArchivoenPantalla(X,Y)
 end.

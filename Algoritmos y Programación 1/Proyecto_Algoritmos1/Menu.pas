@@ -2,21 +2,15 @@
     $Id: gplunit.pt,v 1.2 2002/09/07 15:40:47 peter Exp 2022/11/19 22:14:58 peter Exp $
     This file is part of Proyecto Algoritmos y programación 1
     Copyright (c) 2022 by David Hidalgo CI: 29.827.224 y Daniel Castellanos CI:30.142.703
-
     'Esta es la Primera entrega'
-
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
-
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
  **********************************************************************}
 Program Entrega1;
-
 uses CRT;
-
 const Max_Color=11;
 limite=20;
 type 
@@ -26,11 +20,45 @@ Datos=record
   Spawn:Boolean;
 end;
 Matriz=array[1..(limite+3),1..(limite+3)] of Datos;
-
-Var Jugador1, Jugador2,Piedra:Datos;
-Copia_Mapa,  Mapa: Matriz;
-X,Y,Bolso1,bolso2: Byte;
-
+Var
+  Jugador1, Jugador2,Piedra:Datos;
+  Copia_Mapa,  Mapa: Matriz;
+  X,Y,Bolso1,bolso2: Byte;
+  Mapa_Entrada:text;
+//Procedimiento para Pasar de Caracteres a Números Longint
+  procedure Caracter_a_Numero_Long(Caracter:char; Var Numero:LongInt);
+  begin
+    Case Caracter Of 
+      '1': Numero := 1 + Numero*10;
+      '2': Numero := 2 + Numero*10;
+      '3': Numero := 3 + Numero*10;
+      '4': Numero := 4 + Numero*10;
+      '5': Numero := 5 + Numero*10;
+      '6': Numero := 6 + Numero*10;
+      '7': Numero := 7 + Numero*10;
+      '8': Numero := 8 + Numero*10;
+      '9': Numero := 9 + Numero*10;
+      '0': Numero := 0 + Numero*10;
+    end;
+End;
+//=============================================================================
+//Procedimiento para Pasar de Caracteres a Números
+  procedure Caracter_a_Nuemero(Caracter:char; Var Numero:Byte);
+  begin
+    Case Caracter Of 
+      '1': Numero := 1 + Numero*10;
+      '2': Numero := 2 + Numero*10;
+      '3': Numero := 3 + Numero*10;
+      '4': Numero := 4 + Numero*10;
+      '5': Numero := 5 + Numero*10;
+      '6': Numero := 6 + Numero*10;
+      '7': Numero := 7 + Numero*10;
+      '8': Numero := 8 + Numero*10;
+      '9': Numero := 9 + Numero*10;
+      '0': Numero := 0 + Numero*10;
+    end;
+End;
+//=============================================================================
 //Funcion para generar un Jugador/piedra al azar
 function Rellenar_Jugador_Piedra(Actual:Datos):Datos;
 begin
@@ -41,7 +69,6 @@ begin
   Actual.Spawn:=False;
   Rellenar_Jugador_Piedra:=Actual;
 end;
-
 //Función que me permite cambiar el valor de la clave del jugador o piedra
 function CambiaDatos(Actual:Datos; tipo:String):Datos;
 begin
@@ -53,7 +80,6 @@ begin
   CambiaDatos:=Actual;
 end;
 //=======================================================================================
-
 //Función que me permite cambiar el valor de la clave del jugador o piedra
 function CambiaClave(Clave:LongInt; Tipo:String): Integer;
 begin
@@ -68,7 +94,6 @@ begin
   CambiaClave:=Clave;
 end;
 //=======================================================================================
-
 //función que calcula la cantidad de digitos de un número
 function Digitos(N: LongInt): LongInt;
 Var
@@ -82,7 +107,6 @@ begin
   Digitos := i;
 end;
 //=======================================================================================
-
 //función que transforma numeros en String
 function NumStr(num:LongInt): String;
 Var
@@ -112,7 +136,6 @@ begin
   NumStr := p;
 end;
 //=======================================================================================
-
 //Esta función determina si las claves del jugador y la piedra cumplen con alguno de los requisito para moverse
 function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   //Var Debug_Access:String;
@@ -588,16 +611,15 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       mapa[Y+2,2]:= jugador;
     end;
   //++++++++++++++++++++++++++++++++++++++++++++++++
-  //spawn del jugador
-    procedure Spawn_Jugador2(Var mapa:Matriz; Jugador:Datos);
-    begin
-      mapa[Y+2,X+1]:=jugador;
-    end;
-  //++++++++++++++++++++++++++++++++++++++++++++++++
+//spawn del jugador
+  procedure Spawn_Jugador2(Var mapa:Matriz; Jugador:Datos);
+  begin
+    mapa[Y+2,X+1]:=jugador;
+  end;
+//++++++++++++++++++++++++++++++++++++++++++++++++
 //procedimiento de spawns
   procedure Spawn(Var Mapa:Matriz; Jugador1, Jugador2:Datos);
-
-  procedure morral(bolso:byte; var mapa:matriz);
+  procedure morral(bolso:byte; Var mapa:matriz);
   begin
     mapa[1,bolso+1].spawn:=true;
     mapa[1,bolso+1].clave:=1;
@@ -610,8 +632,60 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     morral(bolso2,mapa);
     imprimir_matriz(mapa,Y,X)
   end;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//Procedimiento que llena la Matriz por Archivos
+  procedure VerArchivoenPantalla(Var Entrada:text ;Mapa:Matriz;X,Y:Byte);
+  Var
+    CH:Char;
+    
+  Begin
+    Reset(entrada);
+    //primera linea, Dimensiones de la matriz
+    repeat
+      read(Entrada,CH);
+    until (CH='(');      
+    repeat
+      read(entrada,CH);
+      Caracter_a_Nuemero(Ch,X);
+    until (CH=',') or (Ch=')') or (eoln(Entrada));
 
+    Repeat
+    read(entrada,CH);
+    Caracter_a_Nuemero(Ch,Y);
+    Until (CH=')') or (eoln(Entrada));
+    Readln(entrada,Ch);
+  //Segunda linea, bolsos
+    if (Ch='(') then
+    begin
+      Repeat
+        read(entrada,CH);
+        Caracter_a_Nuemero(Ch,Bolso1);
+      until (CH=',') or (Ch=')') or (eoln(Entrada));
+      Repeat
+        read(entrada,CH);
+        Caracter_a_Nuemero(Ch,Bolso2);
+       Until (CH=')') or (eoln(Entrada));
+      Readln(entrada,Ch);
+    end
+    else
+    begin
+      Repeat
+        read(Entrada,CH);
+      Until (CH='(');
+      Repeat
+        read(entrada,CH);
+        Caracter_a_Nuemero(Ch,Bolso1);
+      until (CH=',') or (Ch=')') or (eoln(Entrada));
+
+      Repeat
+        read(entrada,CH);
+        Caracter_a_Nuemero(Ch,Bolso2);
+       Until (CH=')') or (eoln(Entrada));
+      Readln(entrada,Ch);
+    end;
+    Close(entrada);
+  End;
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //Procedimiento que crea una matríz de forma interactiva
   procedure Crear_Mapa_Interactivo(Var Mapa:Matriz; Var X,Y,Bolso1,Bolso2: Byte);
   Var
@@ -665,8 +739,9 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         end;
     end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  
   //Proceddimiento de recolecta de datos manual del bolso
-  procedure Bolso_manual(X,T:byte; var bolso:byte);
+  procedure Bolso_manual(X,T:byte; Var bolso:byte);
   begin
     repeat
       Writeln('Indique coordenada X del bolso ',T);
@@ -714,18 +789,22 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         Bordes(Mapa,Y,X);
         Bolso_manual(X,1,bolso1);
         Bolso_manual(X,2,bolso2);
-        imprimir_matriz(Mapa,Y,X);
         Jugador1 := CambiaDatos(Jugador1,'l jugador 1');
         Jugador2 := CambiaDatos(Jugador2,'l jugador 2');
+        imprimir_matriz(Mapa,Y,X);
       end;
       'M':begin
         llenar_matriz_manual(Mapa,Y,X);
         Bordes(Mapa,Y,X);
         Bolso_manual(X,Y,bolso1);
         Bolso_manual(X,Y,bolso2);
-        imprimir_matriz(Mapa,Y,X);
         Jugador1 := CambiaDatos(Jugador1,'l jugador 1');
         Jugador2 := CambiaDatos(Jugador2,'l jugador 2');
+        imprimir_matriz(Mapa,Y,X);
+      end;
+      'A':begin
+        Writeln('Debe de indicar cada dato que introduzca en el archivo entre parentesis y separados por una coma, sin espacios Ejemplo: (8,9) Y recuerde que primero Indica las dimensiones del mapa, luego la posicion x de los bolsos (igualmente entre un parentesis ambos y separados por una coma) Y por último los datos de cada piedra primero color, luego la clave y solo una piedra por linea Para efectos visuales trate de no sobrepasar los 5 digitos en las claves de las piedras');
+        readkey;
       end;
     else
     begin
@@ -750,7 +829,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     end;
   //=======================================================================================
   //Procedimiento de pantalla de Victoria
-    procedure Pantalla_Victoria(Mapa:Matriz; var comida:Boolean);
+    procedure Pantalla_Victoria(Mapa:Matriz; Var comida:Boolean);
     begin
     clrscr;
     Writeln('ganaron felizidades'); Comida:=true;
@@ -788,7 +867,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     Var
     Charac:char; MovX1,MovY1,MovY2,MovX2 :byte; Caidas1, Caidas2:byte; piedra_tropezada:Datos; ex:Longint;
     //trepó
-      procedure Trepada(var mapa:Matriz; MovY,MovX:Byte;Jugador:Datos);
+      procedure Trepada(Var mapa:Matriz; MovY,MovX:Byte;Jugador:Datos);
       begin
         Victoria:=False;
         sound(1000);
@@ -803,7 +882,7 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
       end;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //golpe
-      procedure Golpe(piedra_nueva:datos; var caida:byte);
+      procedure Golpe(piedra_nueva:datos; Var caida:byte);
       begin
         if (piedra_tropezada.clave=Piedra_Nueva.clave) and (piedra_tropezada.color=piedra_nueva.color)then
         begin
@@ -825,7 +904,6 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         nosound;
         end; 
       end;
-
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     begin
       MovX1:=2; MovY1:=Y+2; MovX2:= X+1; MovY2 := Y+2; Caidas1:=0; Caidas2:= 0; piedra_tropezada.Color:=99; piedra_tropezada.Clave:=-10;
@@ -995,13 +1073,12 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   Derrota:=false;
   Victoria:=false;
   comida:=false;
-
   Movimiento(mapa);
     
   end;
 //=======================================================================================
-
 begin
+  assign(Mapa_Entrada,'C:\Datos\Entrada.txt');
   clrscr;
   TextBackground(0);
   Crear_Mapa_Interactivo(Mapa,X,Y,Bolso1,Bolso2);
@@ -1028,3 +1105,4 @@ begin
   Writeln('llegaste al final del programa pricipal, hasta la próxima');
   ReadKey;
 end.
+{Fuí al baño}
