@@ -24,6 +24,8 @@ Datos=record
   Clave:LongInt;
   Color:Byte;
   Spawn:Boolean;
+  PosX:Byte;
+  PosY:Byte;
 end;
 Matriz=array[1..(limite+3),1..(limite+3)] of Datos;
 
@@ -524,83 +526,83 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   end;
 //=======================================================================================
 //Pocedimiento para imprimir matriz
-    Procedure imprimir_matriz(m:matriz; fil,col:Integer);
-    Var 
-      i,j: Integer;
-    begin
-      clrscr;
-      writeln;
-      For j:=2 To (col+1) Do
-      Begin
-        If (m[1,j].Color=0) Then
-          Begin
-            TextBackground(0);
-            write('     ');
-            TextBackground(0);
-          End
-        Else
-          Begin
-            TextBackground(Transformar_color(m[1,j].Color));
-            write((m[1,j].Clave): 5);
-            TextBackground(0);
-          End;
-      End;
-      writeln;
-      For i:=2 To (fil+1) Do
-        begin
-          For j:=2 To (col+1) Do
-            begin
-              if (m[i,j].Color=0) then
-              begin
-                TextBackground(Transformar_color(m[i,j].Color));
-                write('     ');
-                TextBackground(0);
-              end
-              else
-              begin
-                TextBackground(Transformar_color(m[i,j].Color));
-                write((m[i,j].Clave): 5);
-                TextBackground(0);
-              end;
-              
-            End;
-          writeln;
-        End;
-      For j:=2 To (col+1) Do
-      Begin
-        If (m[fil+2,j].spawn) Then
-          Begin
+  Procedure imprimir_matriz(m:matriz; fil,col:Integer);
+  Var 
+    i,j: Integer;
+  begin
+    clrscr;
+  { writeln;
+    For j:=2 To (col+1) Do
+    Begin
+      If (m[1,j].Color=0) Then
+        Begin
           TextBackground(0);
           write('     ');
           TextBackground(0);
-          End
-        Else
-          Begin
-          TextBackground(Transformar_color(m[fil+2,j].Color));
-          write((m[fil+2,j].Clave): 5);
+        End
+      Else
+        Begin
+          TextBackground(Transformar_color(m[1,j].Color));
+          write((m[1,j].Clave): 5);
           TextBackground(0);
+        End;
+    End;}
+    writeln;
+    For i:=1 To (fil+2) Do
+      begin
+        For j:=1 To (col+2) Do
+          begin
+            if (m[i,j].Color=0) then
+            begin
+              TextBackground(Transformar_color(m[i,j].Color));
+              write('     ');
+              TextBackground(0);
+            end
+            else
+            begin
+              TextBackground(Transformar_color(m[i,j].Color));
+              write((m[i,j].Clave): 5);
+              TextBackground(0);
+            end;
+            
           End;
+        writeln;
       End;
-      writeln;
+    {For j:=2 To (col+1) Do
+    Begin
+      If (m[fil+2,j].spawn)=true Then
+        Begin
+        TextBackground(0);
+        write('     ');
+        TextBackground(0);
+        End
+      Else
+        Begin
+        TextBackground(Transformar_color(m[fil+2,j].Color));
+        write((m[fil+2,j].Clave): 5);
+        TextBackground(0);
+        End;
     End;
+    writeln;}
+  End;
+//=======================================================================================
+//spawn del jugador
+  procedure Spawn_Jugador(Var mapa:Matriz; var Jugador:Datos);
+  begin
+    mapa[Y+2,2].Color := jugador.Color;
+    mapa[Y+2,2].Clave := jugador.Clave;
+    Jugador.PosX:=2;
+    Jugador.Posy:=Y+2;
+  end;
 //=======================================================================================
 //procedimiento de spawns
-    procedure Spawn(Var Mapa:Matriz; Jugador1, Jugador2:Datos);
-    //spawn del jugador
-      procedure SpawnJugador(Var mapa:Matriz; Jugador1, Jugador2:Datos);
-      begin
-        mapa[Y+2,2].Color := jugador1.Color;
-        mapa[Y+2,2].Clave := jugador1.Clave;
-        TextBackground(0);
-
-        mapa[Y+2,X].Color := jugador2.Color;
-        mapa[Y+2,X].Clave := jugador2.Clave;
-
-      end;
-    begin
-      SpawnJugador(Mapa,Jugador1,Jugador2);
-    end;
-  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  procedure Spawn(Var Mapa:Matriz; var Jugador1, Jugador2:Datos);
+  
+  begin
+    Spawn_Jugador(Mapa,Jugador1,ModX);
+    Spawn_Jugador(Mapa,Jugador2);
+  end;
+//=======================================================================================
 
 //Procedimiento que crea una matríz de forma interactiva
   procedure Crear_Mapa_Interactivo(Var Mapa:Matriz; Var X,Y: Byte);
@@ -710,25 +712,36 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
 //=======================================================================================
 
 //Procedimiento que maneja al jugador
-  procedure Jugador_Funcionamiento(Var Jugador:Datos; Var Mapa:Matriz);
-
-  //Procedimiento de condicion de victoria
-    procedure Derrota(Var Muertes:Byte);
+  procedure Jugador_Funcionamiento(Var Mapa:Matriz);
+  //Procedimiento tropiezo
+  //Procedimiento de condicion de Derrota
+    procedure Muerte(Var Jugador:Datos; Var Caidas:Byte);
     begin
-      if muertes<=3 then
+      if Caidas<=3 then
       begin
-        muertes:=muertes+1;
-        
+        Caidas:=Caidas+1;
+        Spawn_Jugador(Mapa, Jugador);
       end
       else
-      begin       
+      begin
+        clrscr;
+        Writeln('Moriste')
       end;
     end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //movimiento prueba
     procedure Movimiento(Var Mapa:Matriz);
     Var
-    Charac:char; MovX1,MovY1, gox,goy:byte; muertes1, muertes2:byte; piedra_tropezada:Datos;
+    Charac:char; piedra_tropezada:Datos; Caidas1,Caidas2:byte;
+    //Movimiento positivo
+    procedure Movimiento_Arriba(var Mapa:Matriz; var Jugador:Datos);
+    begin
+      mapa[Jugador.PosY-1,Jugador.PosX].Color := jugador.Color;
+      mapa[Jugador.PosY-1,Jugador.PosX].Clave := jugador.Clave;
+      Jugador.PosY:=Y-1;
+    end;
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    { MovX1,MovY1, gox,goy:byte; 
     begin
       MovX1:=2; MovY1:=Y+2; muertes1:=0; muertes2:= 0; piedra_tropezada.Color:=99; piedra_tropezada.Clave:=-10;
       repeat        
@@ -855,8 +868,32 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
         repeat
         until KeyPressed;
       until ReadKey='m';
+    end;}
+    begin
+      repeat      
+        repeat
+          repeat
+          until (KeyPressed);
+          Charac:=ReadKey;
+        until ((Charac='w') or (Charac='a') or (Charac='s') or (Charac='d'));
+          case Charac of
+            'w':begin
+              if te_Mueves(Jugador1,mapa[Jugador1.PosY-1,Jugador1.PosX]) then
+              begin
+                Movimiento_Arriba(Mapa,Jugador1);
+              end
+              else
+              begin
+                sound(200);
+                Delay(500);
+                nosound;
+                piedra_tropezada.Color:=mapa[Jugador1.PosY-1,Jugador1.PosX].Color;
+                piedra_tropezada.Clave:=mapa[Jugador1.PosY-1,Jugador1.PosX].Clave;
+              end;
+            end;
+          end;      
+      until (Caidas1>3);
     end;
-    
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   begin
 
@@ -870,7 +907,7 @@ begin
   clrscr;
   TextBackground(0);
   Crear_Mapa_Interactivo(Mapa,X,Y);
-  Jugador_Funcionamiento(Jugador1,Mapa);
+  Jugador_Funcionamiento(Mapa);
   {Jugador.Clave:=CambiaClave(Jugador.Clave,'clave de jugador');
   Piedra.Clave:=CambiaClave(Piedra.Clave,'clave de Piedra');
   Jugador.Color:=CambiaClave(Jugador.Clave,'color de jugador');
