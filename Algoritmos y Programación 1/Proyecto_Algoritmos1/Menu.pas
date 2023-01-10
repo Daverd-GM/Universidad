@@ -23,7 +23,7 @@ Matriz=array[1..(limite+3),1..(limite+3)] of Datos;
 Var
   Jugador1, Jugador2,Piedra:Datos;
   Copia_Mapa,  Mapa: Matriz;
-  X,Y,Bolso1,bolso2,caidas1,caidas2: Byte;
+  X,Y,Bolso1,bolso2,Caidas1,Caidas2: Byte;
   Entrada,Salida:text;
 //Procedimiento para Pasar de Caracteres a Números Longint
   procedure Caracter_a_Numero_Long(Caracter:char; Var Numero:LongInt);
@@ -421,7 +421,8 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
     begin
     {Debug_Access:='';
     Menu_Clave(Debug_Access);}
-      if (numeros_iguales(Clave_Jugador,Piedra)) or (numeros_multiplo(Clave_Jugador,Piedra)) or (Triangular(Clave_Jugador,Piedra)) or (Primos_relativos(Clave_Jugador,Piedra)) or (Contenido(Clave_Jugador,Piedra)) or (Inverso(Clave_Jugador,Piedra)) or (Amigo(Clave_Jugador,Piedra)) then
+      if (numeros_iguales(Clave_Jugador,Piedra)) or (numeros_multiplo(Clave_Jugador,Piedra)) or (Triangular(Clave_Jugador,Piedra)) or 
+      (Primos_relativos(Clave_Jugador,Piedra)) or (Contenido(Clave_Jugador,Piedra)) or (Inverso(Clave_Jugador,Piedra)) or (Amigo(Clave_Jugador,Piedra)) then
         Coincidencia_de_Clave:=True else Coincidencia_de_Clave:=False;
     end;
 //=======================================================================================
@@ -630,12 +631,12 @@ function Coincidencia_de_Clave(Clave_Jugador,piedra:Integer):Boolean;
   end;
 //=======================================================================================
 //Impresion de caidas
-procedure IMCaidas(Caidas1,caidas2:byte);
+procedure IMCaidas(Caidas1,Caidas2:byte);
 begin
   Writeln;
   Writeln;
-  Writeln('El jugador 1 se ha caido ',caidas1, ' veces');
-  Writeln('El jugador 2 se ha caido ',caidas2, ' veces')
+  Writeln('El jugador 1 se ha caido ',Caidas1, ' veces');
+  Writeln('El jugador 2 se ha caido ',Caidas2, ' veces')
 end;
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //spawn del jugador
@@ -664,7 +665,7 @@ end;
     morral(bolso1,mapa);
     morral(bolso2,mapa);
     imprimir_matriz(mapa,Y,X);
-    IMCaidas(caidas1,caidas2);
+    IMCaidas(Caidas1,Caidas2);
   end;
 //++++++++++++++++++++++++++++++++++++++++++++++        +++++++++++++++++++++++++++++
   //Procedimiento que llena la matríz de forma aleatoria
@@ -695,80 +696,66 @@ end;
     CH:Char;
     i,j,color:byte;
     Clave:Longint;
-    si:boolean;
+    si,Vacio:boolean;
   Begin
-    Reset(entrada);
-    //primera linea, Dimensiones de la matriz *******************************************
-    X:=0; Y:=0; Bolso2:=0 ; Bolso1:=0;
     repeat
-      read(Entrada,CH);
-    until (CH='(');      
-    repeat
-      read(entrada,CH);
-      Caracter_a_Numero(Ch,X);
-    until (CH=',') or (Ch=')') or (eoln(Entrada));
-    Repeat
-    read(entrada,CH);
-    Caracter_a_Numero(Ch,Y);
-    Until (CH=')') or (eoln(Entrada));
-    Readln(entrada,Ch);
-  //Segunda linea, bolsos *************************************************************
-    if (Ch='(') then
-    begin
-      Repeat
-        read(entrada,CH);
-        Caracter_a_Numero(Ch,Bolso1);
-      until (CH=',') or (Ch=')') or (eoln(Entrada));
-      Repeat
-        read(entrada,CH);
-        Caracter_a_Numero(Ch,Bolso2);
-      Until (CH=')') or (eoln(Entrada));
-      Readln(entrada,Ch);
-    end
-    else
-    begin
-      Repeat
-        read(Entrada,CH);
-      Until (CH='(');
-      Repeat
-        read(entrada,CH);
-        Caracter_a_Numero(Ch,Bolso1);
-      until (CH=',') or (Ch=')') or (eoln(Entrada));
-      Repeat
-        read(entrada,CH);
-        Caracter_a_Numero(Ch,Bolso2);
-      Until (CH=')') or (eoln(Entrada));
-      Readln(entrada,Ch);
-    end;
-    //Piedras *******************************************************************************
-    i:=y+2;
-    Si:=false;
-    repeat
-      i:=i-1;
-      j := x+2;
-      repeat
-        j:=j-1;
-        Color := 0;
-        clave := 0;
-        If (Ch='(') Then
-        Begin
-        Repeat
+      Reset(entrada);
+      if not(eof(entrada)) then
+      begin
+          //primera linea, Dimensiones de la matriz *******************************************
+        X:=0; Y:=0; Bolso2:=0 ; Bolso1:=0;
+        repeat
+          read(Entrada,CH);
+        until (CH='(');      
+        repeat
           read(entrada,CH);
-          Caracter_a_Numero(Ch,Color);
-        Until (CH=',') Or (Ch=')') Or (eoln(Entrada));
-        Mapa[i,j].color := Color;
+          Caracter_a_Numero(Ch,X);
+        until (CH=',') or (Ch=')') or (eoln(Entrada));
         Repeat
-          read(entrada,CH);
-          Caracter_a_Numero_Long(Ch,Clave);
-        Until (CH=')') Or (eoln(Entrada));
-        Mapa[i,j].clave:=clave;
+        read(entrada,CH);
+        Caracter_a_Numero(Ch,Y);
+        Until (CH=')') or (eoln(Entrada));
         Readln(entrada,Ch);
-        End
-        Else
-          Begin
-            Repeat
-              read(Entrada,CH);
-            Until (CH='(');
+      //Segunda linea, bolsos *************************************************************
+        if (Ch='(') then
+        begin
+          Repeat
+            read(entrada,CH);
+            Caracter_a_Numero(Ch,Bolso1);
+          until (CH=',') or (Ch=')') or (eoln(Entrada));
+          Repeat
+            read(entrada,CH);
+            Caracter_a_Numero(Ch,Bolso2);
+          Until (CH=')') or (eoln(Entrada));
+          Readln(entrada,Ch);
+        end
+        else
+        begin
+          Repeat
+            read(Entrada,CH);
+          Until (CH='(');
+          Repeat
+            read(entrada,CH);
+            Caracter_a_Numero(Ch,Bolso1);
+          until (CH=',') or (Ch=')') or (eoln(Entrada));
+          Repeat
+            read(entrada,CH);
+            Caracter_a_Numero(Ch,Bolso2);
+          Until (CH=')') or (eoln(Entrada));
+          Readln(entrada,Ch);
+        end;
+        //Piedras *******************************************************************************
+        i:=y+2;
+        Si:=false;
+        repeat
+          i:=i-1;
+          j := x+2;
+          repeat
+            j:=j-1;
+            Color := 0;
+            clave := 0;
+            If (Ch='(') Then
+            Begin
             Repeat
               read(entrada,CH);
               Caracter_a_Numero(Ch,Color);
@@ -778,22 +765,51 @@ end;
               read(entrada,CH);
               Caracter_a_Numero_Long(Ch,Clave);
             Until (CH=')') Or (eoln(Entrada));
-            Mapa[i,j].clave := clave;
+            Mapa[i,j].clave:=clave;
             Readln(entrada,Ch);
-          End;
-      until (eof(Entrada) or (j<=2));
-      if j>=3 then
+            End
+            Else
+              Begin
+                Repeat
+                  read(Entrada,CH);
+                Until (CH='(');
+                Repeat
+                  read(entrada,CH);
+                  Caracter_a_Numero(Ch,Color);
+                Until (CH=',') Or (Ch=')') Or (eoln(Entrada));
+                Mapa[i,j].color := Color;
+                Repeat
+                  read(entrada,CH);
+                  Caracter_a_Numero_Long(Ch,Clave);
+                Until (CH=')') Or (eoln(Entrada));
+                Mapa[i,j].clave := clave;
+                Readln(entrada,Ch);
+              End;
+          until (eof(Entrada) or (j<=2));
+          if j>=3 then
+          begin
+            si:=true;
+            Completar_matriz_random(Mapa,i,j,i,2,si);
+          end;
+        until (eof(Entrada) or (i<=2));
+        if i>=3 then
+        begin
+          si:=false;
+          Completar_matriz_random(Mapa,i,x+2,2,2,si);
+        end;
+        Close(entrada);
+        Vacio:=False;
+      end
+      else
       begin
-        si:=true;
-        Completar_matriz_random(Mapa,i,j,i,2,si);
+        Close(entrada);
+        TextBackground(14);
+        Writeln('Hola hubo un error al cargar su archivo puesto que esta vacio porfavor rellenelo en la direccion "C:\Datos\Entrada.txt" y luego presione cualquier tecla');
+        TextBackground(0);
+        readkey;
+        Vacio:=True;
       end;
-    until (eof(Entrada) or (i<=2));
-    if i>=3 then
-    begin
-      si:=false;
-      Completar_matriz_random(Mapa,i,x+2,2,2,si);
-    end;
-    Close(entrada);
+    until (vacio=False);
   End;
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //Procedimiento que crea una matríz de forma interactiva
@@ -915,7 +931,8 @@ end;
       'A':begin
         Writeln('Debe de indicar cada dato que introduzca en el archivo entre parentesis y separados por una coma, sin espacios');
         Writeln(' Ejemplo: (8,9) Y recuerde que primero Indica las dimensiones del mapa, luego la posicion x de los bolsos luego la clave y solo una piedra por linea ');
-        Writeln('Para efectos visuales trate de no sobrepasar los 5 digitos en las claves de las piedras igualmente entre un parentesis ambos y separados por una coma) Y por último los datos de cada piedra primero color, ');
+        Writeln('Para efectos visuales trate de no sobrepasar los 5 digitos en las claves de las piedras igualmente entre un parentesis ambos y separados por una coma)');
+        Writeln(' Y por último los datos de cada piedra primero color, ');
         Writeln('luego la clave y solo una piedra por linea Para efectos visuales trate de no sobrepasar los 5 digitos en las claves de las piedras');
         readkey;
         TextBackground(2);writeln('CARGANDO por favor no escriba');
@@ -939,31 +956,61 @@ end;
 //Procedimiento que maneja al jugador
   procedure Jugador_Funcionamiento(Var Mapa:Matriz);
   Var
-    Victoria,Derrota,Comida:Boolean; pasos1,pasos2:integer;
+    Victoria,Derrota:Boolean; pasos1,pasos2:integer;
   //Procedimiento de pantalla de Derrota
     procedure Pantalla_Derrota(Mapa:Matriz);
     begin
-    clrscr;
-    Writeln('Perdieron Buena suerte la proxima vez');
+      clrscr;
+      Writeln('Perdieron Buena suerte la proxima vez');
+      sound(500);
+      Delay(500);      
+      Sound(400);
+      Delay(500);
+      Sound(300);
+      Delay(500);
+      Sound(200);
+      Sound(300);
+      Delay(500);
+      Sound(100);
+      Delay(500);
+      nosound;
     end;
   //=======================================================================================
   //Procedimiento de pantalla de Victoria
-    procedure Pantalla_Victoria(Mapa:Matriz; Var comida:Boolean);
+    procedure Pantalla_Victoria(Mapa:Matriz;a:Byte);
     begin
-    clrscr;
-    Writeln('ganaron felizidades');  Comida:=true;
-    end;
-  //=======================================================================================
-  //Procedimiento de condicion de victoria
-    Procedure ganaste(MovY,MovX:Byte; Mapa:Matriz);
-    begin
-      if (MovY=1) and ((MovX=(Bolso1+1)) or (movX=(Bolso2+1))) then
+      clrscr;
+      if a=1 then
       begin
-        Pantalla_Victoria(Mapa,comida); Victoria:=True;
+        Writeln('felicidades por llegar a la meta jugador 1, ambos ganaron');
       end
       else
       begin
-        Victoria:=false;
+        Writeln('felicidades por llegar a la meta jugador 2, ambos ganaron');
+      end;
+      sound(200);
+      Delay(500);      
+      Sound(300);
+      Delay(500);
+      Sound(400);
+      Delay(500);
+      Sound(500);
+      Delay(500);
+      Sound(600);
+      Delay(500);
+      nosound;
+    end;
+  //=======================================================================================
+  //Procedimiento de condicion de victoria
+    function ganaste(MovY,MovX,a:Byte;Mapa:Matriz):Boolean;
+    begin
+      if (MovY=1) and ((MovX=(Bolso1+1)) or (movX=(Bolso2+1))) then
+      begin
+        Pantalla_Victoria(Mapa,a); ganaste:=True;
+      end
+      else
+      begin
+        ganaste:=false;
       end;
       
     end;
@@ -983,7 +1030,7 @@ end;
     end;
   //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //movimiento prueba
-    procedure Movimiento(Var Mapa:Matriz; var caidas1,caidas2:byte);
+    procedure Movimiento(Var Mapa:Matriz; var Caidas1,Caidas2:byte);
     Var
     Charac:char; MovX1,MovY1,MovY2,MovX2 :byte; piedra_tropezada:Datos;
     //Procedimiento salida
@@ -1025,14 +1072,14 @@ end;
         mapa[MovY,MovX].Clave := jugador.Clave;
         mapa[MovY,MovX].spawn:=true;
         imprimir_matriz(mapa,Y,X);
-        IMCaidas(caidas1,caidas2) ; 
+        IMCaidas(Caidas1,Caidas2) ; 
         GOTOXY((((MovX-1)*5)-2),MovY+1); 
         Salida_Texto(a,True);
-        ganaste(MovY,MovX,Mapa);
+        victoria:=ganaste(MovY,MovX,a,Mapa);
       end;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //golpe
-      procedure Golpe(piedra_nueva:datos; a:Byte; Var caida:byte );
+      procedure Golpe(piedra_nueva:datos; a:Byte; Var Caida:byte );
       begin
         if (piedra_tropezada.clave=Piedra_Nueva.clave) and (piedra_tropezada.color=piedra_nueva.color)then
         begin
@@ -1045,6 +1092,8 @@ end;
           piedra_tropezada.Color := 99;
           piedra_tropezada.Clave := -10;
           Salida_Texto(a,False);
+          imprimir_matriz(mapa,Y,X);
+          IMCaidas(Caidas1,Caidas2);
           Derrota:=Perdiste(Caida);          
         end
         else
@@ -1053,6 +1102,7 @@ end;
         sound(200);
         Delay(500);
         nosound;
+        imprimir_matriz(mapa,Y,X);
         end; 
       end;
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1096,7 +1146,7 @@ end;
                 mapa[MovY1,MovX1].Clave := Jugador1.Clave;
                 mapa[MovY1,MovX1].spawn := Jugador1.spawn;
                 imprimir_matriz(mapa,Y,X);
-                IMCaidas(caidas1,caidas2);
+                IMCaidas(Caidas1,Caidas2);
                 GOTOXY((((MovX1-1)*5)-2),MovY1+1);
               end;
             end           
@@ -1135,7 +1185,7 @@ end;
                   mapa[MovY1,MovX1].Clave := Jugador1.Clave;
                   mapa[MovY1,MovX1].spawn := Jugador1.spawn;
                   imprimir_matriz(mapa,Y,X);
-                  IMCaidas(caidas1,caidas2) ;
+                  IMCaidas(Caidas1,Caidas2) ;
                   GOTOXY((((MovX1-1)*5)-2),MovY1+1);
                   end;
               end
@@ -1174,7 +1224,7 @@ end;
                 mapa[MovY2,MovX2].Clave := jugador2.Clave;
                 mapa[MovY2,MovX2].spawn := jugador2.spawn;
                 imprimir_matriz(mapa,Y,X);
-                IMCaidas(caidas1,caidas2);
+                IMCaidas(Caidas1,Caidas2);
                 GOTOXY((((MovX2-1)*5)-2),MovY2+1);
               end;
             end           
@@ -1213,7 +1263,7 @@ end;
                   mapa[MovY2,MovX2].Clave := jugador2.Clave;
                   mapa[MovY2,MovX2].spawn := jugador2.spawn;
                   imprimir_matriz(mapa,Y,X);
-                  IMCaidas(caidas1,caidas2);
+                  IMCaidas(Caidas1,Caidas2);
                   GOTOXY((((MovX2-1)*5)-2),MovY2+1);
                   end;
               end
@@ -1225,7 +1275,7 @@ end;
           end;
         end;
         
-      until ((Derrota) or (comida));
+      until ((Derrota) or (Victoria));
       
     end;
     
@@ -1233,9 +1283,8 @@ end;
   begin
   Derrota:=false;
   Victoria:=false;
-  comida:=false;
   rewrite(Salida);
-  Movimiento(mapa,caidas1,caidas2);
+  Movimiento(mapa,Caidas1,Caidas2);
     delay(1000); Writeln('...');
   Close(Salida);
   end;
