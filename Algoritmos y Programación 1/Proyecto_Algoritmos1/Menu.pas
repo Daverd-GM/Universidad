@@ -1290,6 +1290,10 @@ end;
   end;
 //=======================================================================================
 begin
+  clrscr;
+  Writeln('Antes de empezar asegurece de que Entrada.txt y Salida.txt estan en la carpeta "C:\Datos\"');
+  delay(50000);
+  clrscr;
   assign(Entrada,'C:\Datos\Entrada.txt');
   assign(Salida,'C:\Datos\Salida.txt');
   clrscr;
